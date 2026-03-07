@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>멀티 툴 서비스 (로또 & AI 테스트)</title>
+    <title>멀티 툴 서비스 (로또 & AI 테스트 & 메뉴 추천)</title>
     <link rel="stylesheet" href="style.css">
     
     <!-- 테마 초기화 스크립트 -->
@@ -29,6 +29,7 @@
         <div class="tab-menu">
             <button class="tab-btn active" data-tab="lotto">로또 추천</button>
             <button class="tab-btn" data-tab="gender">AI 남녀상</button>
+            <button class="tab-btn" data-tab="dinner">저녁 메뉴</button>
         </div>
 
         <!-- 로또 섹션 -->
@@ -50,7 +51,6 @@
             <div id="numbers" class="numbers-container"></div>
             <button id="generate-btn" class="main-btn">번호 생성하기</button>
 
-            <!-- 로또 전용 댓글 수 -->
             <div class="disqus-count">
                 <a href="#comment-area" class="dsq-count-link" id="lotto-count-link">댓글 보기</a>
             </div>
@@ -73,9 +73,25 @@
             <div id="loading-spinner" style="display: none; margin: 20px 0;">분석 중...</div>
             <div id="label-container"></div>
 
-            <!-- 남녀상 전용 댓글 수 -->
             <div class="disqus-count">
                 <a href="#comment-area" class="dsq-count-link" id="gender-count-link">댓글 보기</a>
+            </div>
+        </div>
+
+        <!-- 저녁 메뉴 추천 섹션 -->
+        <div id="dinner-section" class="tab-content">
+            <h1>오늘 저녁 뭐 먹지?</h1>
+            <p class="subtitle">결정 장애를 해결해드립니다!</p>
+            
+            <div class="menu-display" id="menu-display">
+                <div class="menu-emoji" id="menu-emoji">🍽️</div>
+                <div class="menu-name" id="menu-name">메뉴를 추천받아보세요</div>
+            </div>
+            
+            <button id="recommend-menu-btn" class="main-btn">메뉴 추천받기</button>
+
+            <div class="disqus-count">
+                <a href="#comment-area" class="dsq-count-link" id="dinner-count-link">댓글 보기</a>
             </div>
         </div>
 

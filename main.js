@@ -11,6 +11,30 @@ const imageInput = document.getElementById('image-input');
 const previewImage = document.getElementById('preview-image');
 const loadingSpinner = document.getElementById('loading-spinner');
 
+// 저녁 메뉴 추천 요소
+const recommendMenuBtn = document.getElementById('recommend-menu-btn');
+const menuEmoji = document.getElementById('menu-emoji');
+const menuName = document.getElementById('menu-name');
+
+// 저녁 메뉴 리스트
+const dinnerMenus = [
+    { name: '삼겹살', emoji: '🥓' },
+    { name: '치킨', emoji: '🍗' },
+    { name: '초밥', emoji: '🍣' },
+    { name: '김치찌개', emoji: '🥘' },
+    { name: '파스타', emoji: '🍝' },
+    { name: '햄버거', emoji: '🍔' },
+    { name: '비빔밥', emoji: '🥗' },
+    { name: '마라탕', emoji: '🍜' },
+    { name: '짜장면', emoji: '🥢' },
+    { name: '돈가스', emoji: '🍱' },
+    { name: '스테이크', emoji: '🥩' },
+    { name: '쌀국수', emoji: '🍲' },
+    { name: '피자', emoji: '🍕' },
+    { name: '떡볶이', emoji: '🌶️' },
+    { name: '냉면', emoji: '❄️' }
+];
+
 // 1. 테마 관리
 const updateThemeUI = (isDark) => {
     if (isDark) {
@@ -37,8 +61,12 @@ themeToggle.addEventListener('click', () => {
 function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'lotto' ? baseUrl : baseUrl + "#!" + tabId;
-    // 'lotto' 탭은 기존 댓글 복구를 위해 식별자를 아예 주지 않거나 가장 초기의 것으로 설정
-    const identifier = tabId === 'lotto' ? undefined : "gender-face-test-v1";
+    
+    // 식별자 관리
+    let identifier;
+    if (tabId === 'lotto') identifier = undefined; // 기존 댓글용
+    else if (tabId === 'gender') identifier = "gender-face-test-v1";
+    else if (tabId === 'dinner') identifier = "dinner-menu-recommend-v1";
 
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({
@@ -46,14 +74,14 @@ function resetDisqus(tabId) {
             config: function () {
                 this.page.identifier = identifier;
                 this.page.url = pageUrl;
-                this.page.title = tabId === 'lotto' ? '로또 번호 생성기' : 'AI 남녀상 테스트';
+                this.page.title = document.querySelector(`[data-tab="${tabId}"]`).innerText;
             }
         });
     } else {
         window.disqus_config = function () {
             this.page.url = pageUrl;
             this.page.identifier = identifier;
-            this.page.title = tabId === 'lotto' ? '로또 번호 생성기' : 'AI 남녀상 테스트';
+            this.page.title = document.querySelector(`[data-tab="${tabId}"]`).innerText;
         };
         (function() {
             var d = document, s = d.createElement('script');
@@ -63,15 +91,13 @@ function resetDisqus(tabId) {
         })();
     }
     
-    // 각 탭의 댓글 수 링크에 Disqus가 인식할 수 있는 href 설정
-    const lottoLink = document.getElementById('lotto-count-link');
-    const genderLink = document.getElementById('gender-count-link');
-    
-    lottoLink.setAttribute('href', baseUrl + '#disqus_thread');
-    lottoLink.setAttribute('data-disqus-url', baseUrl);
-    
-    genderLink.setAttribute('href', baseUrl + '#!gender#disqus_thread');
-    genderLink.setAttribute('data-disqus-url', baseUrl + "#!gender");
+    // 댓글 수 링크 갱신
+    document.querySelectorAll('.dsq-count-link').forEach(link => {
+        const id = link.id.split('-')[0];
+        const linkUrl = id === 'lotto' ? baseUrl : baseUrl + "#!" + id;
+        link.setAttribute('href', linkUrl + '#disqus_thread');
+        link.setAttribute('data-disqus-url', linkUrl);
+    });
 }
 
 // 초기 로드
@@ -90,16 +116,15 @@ tabBtns.forEach(btn => {
     });
 });
 
-// 댓글 수 클릭 시 부드러운 스크롤
+// 댓글 수 클릭 시 스크롤
 document.querySelectorAll('.dsq-count-link').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
-        const target = document.getElementById('comment-area');
-        target.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('comment-area').scrollIntoView({ behavior: 'smooth' });
     });
 });
 
-// 3. 로또 번호 생성 (기존 로직 동일)
+// 3. 로또 번호 생성
 generateBtn.addEventListener('click', () => {
     numbersContainer.innerHTML = '';
     const numbers = new Set();
@@ -120,7 +145,7 @@ generateBtn.addEventListener('click', () => {
     });
 });
 
-// 4. AI 남녀상 테스트 (기존 로직 동일)
+// 4. AI 남녀상 테스트
 async function initModel() {
     if (!model) {
         const modelURL = URL + "model.json";
@@ -133,7 +158,6 @@ async function initModel() {
 imageInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = async (event) => {
         previewImage.src = event.target.result;
@@ -167,3 +191,21 @@ async function predict(imgElement) {
         labelContainer.appendChild(wrapper);
     }
 }
+
+// 5. 저녁 메뉴 추천
+recommendMenuBtn.addEventListener('click', () => {
+    // 애니메이션 효과를 위해 잠시 텍스트 변경
+    menuName.innerText = '어디보자...';
+    menuEmoji.style.animation = 'none';
+    menuEmoji.offsetHeight; // reflow
+    menuEmoji.style.animation = 'bounce 0.5s infinite';
+
+    setTimeout(() => {
+        const randomIdx = Math.floor(Math.random() * dinnerMenus.length);
+        const selected = dinnerMenus[randomIdx];
+        
+        menuEmoji.innerText = selected.emoji;
+        menuName.innerText = selected.name;
+        menuEmoji.style.animation = 'bounce 2s infinite';
+    }, 600);
+});
