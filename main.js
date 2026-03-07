@@ -33,7 +33,40 @@ themeToggle.addEventListener('click', () => {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-// 2. 탭 전환
+// 2. Disqus 탭별 초기화 로직
+function resetDisqus(tabId) {
+    const canonicalUrl = window.location.origin + window.location.pathname + "#!" + tabId;
+    const identifier = "productbuilder-tab-" + tabId;
+
+    if (typeof DISQUS !== 'undefined') {
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                this.page.identifier = identifier;
+                this.page.url = canonicalUrl;
+                this.page.title = tabId === 'lotto' ? '로또 번호 생성기' : 'AI 남녀상 테스트';
+            }
+        });
+    } else {
+        // 처음 로드할 때
+        window.disqus_config = function () {
+            this.page.url = canonicalUrl;
+            this.page.identifier = identifier;
+            this.page.title = tabId === 'lotto' ? '로또 번호 생성기' : 'AI 남녀상 테스트';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://productbuilder-j0ykvmteku.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    }
+}
+
+// 초기 탭에 맞춰 Disqus 로드
+resetDisqus('lotto');
+
+// 탭 전환 이벤트에 Disqus 리셋 추가
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const tabId = btn.getAttribute('data-tab');
@@ -43,6 +76,9 @@ tabBtns.forEach(btn => {
         
         btn.classList.add('active');
         document.getElementById(`${tabId}-section`).classList.add('active');
+
+        // 탭 변경 시 해당 탭 전용 댓글창 로드
+        resetDisqus(tabId);
     });
 });
 
@@ -67,7 +103,7 @@ generateBtn.addEventListener('click', () => {
     });
 });
 
-// 4. AI 남녀상 테스트 (파일 업로드 방식)
+// 4. AI 남녀상 테스트
 async function initModel() {
     if (!model) {
         const modelURL = URL + "model.json";
@@ -81,7 +117,6 @@ imageInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // 프리뷰 표시
     const reader = new FileReader();
     reader.onload = async (event) => {
         previewImage.src = event.target.result;
@@ -99,7 +134,7 @@ async function predict(imgElement) {
     const prediction = await model.predict(imgElement);
     
     labelContainer = document.getElementById("label-container");
-    labelContainer.innerHTML = ''; // 기존 결과 초기화
+    labelContainer.innerHTML = '';
 
     for (let i = 0; i < maxPredictions; i++) {
         const className = prediction[i].className;
