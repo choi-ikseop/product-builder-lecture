@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>멀티 툴 서비스 (로또 & AI 테스트 & 메뉴 추천)</title>
+    <title>멀티 툴 서비스 (로또 & AI 테스트 & 한식 레시피)</title>
     <link rel="stylesheet" href="style.css">
     
     <!-- 테마 초기화 스크립트 -->
@@ -29,7 +29,7 @@
         <div class="tab-menu">
             <button class="tab-btn active" data-tab="lotto">로또 추천</button>
             <button class="tab-btn" data-tab="gender">AI 남녀상</button>
-            <button class="tab-btn" data-tab="dinner">저녁 메뉴</button>
+            <button class="tab-btn" data-tab="dinner">오늘의 한식</button>
         </div>
 
         <!-- 로또 섹션 -->
@@ -80,19 +80,31 @@
 
         <!-- 저녁 메뉴 추천 섹션 -->
         <div id="dinner-section" class="tab-content">
-            <h1>오늘 저녁 뭐 먹지?</h1>
-            <p class="subtitle">글로벌 레시피 API가 추천해드립니다!</p>
+            <h1>오늘 저녁 한식 추천</h1>
+            <p class="subtitle">맛있는 한식 레시피를 확인해보세요</p>
             
             <div class="menu-display" id="menu-display">
                 <div id="menu-image-container" class="menu-image-container">
-                    <div class="menu-emoji" id="menu-emoji">🍽️</div>
+                    <div class="menu-emoji" id="menu-emoji">🍚</div>
                     <img id="menu-img" style="display: none;">
                 </div>
                 <div class="menu-name" id="menu-name">메뉴를 추천받아보세요</div>
                 <div id="menu-category" class="menu-category"></div>
+                
+                <!-- 레시피 상세 영역 -->
+                <div id="recipe-container" class="recipe-container" style="display: none;">
+                    <div class="recipe-section">
+                        <h3>[ 주재료 ]</h3>
+                        <p id="recipe-ingredients"></p>
+                    </div>
+                    <div class="recipe-section">
+                        <h3>[ 조리 순서 ]</h3>
+                        <ol id="recipe-steps"></ol>
+                    </div>
+                </div>
             </div>
             
-            <button id="recommend-menu-btn" class="main-btn">실시간 메뉴 추천받기</button>
+            <button id="recommend-menu-btn" class="main-btn">메뉴 및 레시피 추천받기</button>
 
             <div class="disqus-count">
                 <a href="#comment-area" class="dsq-count-link" id="dinner-count-link">댓글 보기</a>

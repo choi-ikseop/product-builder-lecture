@@ -31,11 +31,11 @@ body {
 .container {
     text-align: center;
     background-color: var(--card-bg);
-    padding: 2.5rem;
+    padding: 2rem;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 90%;
-    max-width: 450px;
+    max-width: 480px;
     position: relative;
     border: 1px solid var(--border-color);
     margin: 20px 0;
@@ -60,7 +60,7 @@ body {
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.2s;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 .tab-btn.active {
@@ -76,39 +76,39 @@ body {
 
 /* 로또 스타일 */
 .lotto-image {
-    width: 100px; height: 100px; margin: 0 auto 2rem;
+    width: 80px; height: 80px; margin: 0 auto 1.5rem;
     animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
     0% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(5deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
     100% { transform: translateY(0px) rotate(0deg); }
 }
 
 .numbers-container {
     display: flex; justify-content: center; flex-wrap: wrap;
-    gap: 0.8rem; margin-bottom: 2rem; min-height: 60px;
+    gap: 0.6rem; margin-bottom: 1.5rem; min-height: 50px;
 }
 
 .number {
-    width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;
-    background: var(--bg-color); border-radius: 50%; font-weight: bold;
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    background: var(--bg-color); border-radius: 50%; font-weight: bold; font-size: 0.9rem;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* AI 테스트 스타일 */
 .upload-area {
     border: 2px dashed var(--border-color);
-    padding: 2rem; border-radius: 15px; margin-bottom: 20px;
+    padding: 1.5rem; border-radius: 15px; margin-bottom: 20px;
     cursor: pointer; transition: all 0.2s;
 }
 
 .upload-area:hover, .upload-area.drag-over { border-color: var(--accent-color); background: rgba(0,123,255,0.05); }
 .upload-label { cursor: pointer; display: block; }
-.upload-icon { font-size: 3rem; margin-bottom: 10px; }
+.upload-icon { font-size: 2.5rem; margin-bottom: 10px; }
 
-/* 메뉴 추천 스타일 고도화 */
+/* 메뉴 추천 및 레시피 스타일 */
 .menu-display {
     background: var(--bg-color);
     padding: 1.5rem;
@@ -118,90 +118,54 @@ body {
     transition: all 0.3s;
 }
 
-.menu-display.loading {
-    opacity: 0.6;
-    transform: scale(0.98);
-}
-
 .menu-image-container {
-    width: 180px;
-    height: 180px;
-    margin: 0 auto 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--card-bg);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    width: 150px; height: 150px; margin: 0 auto 1rem;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--card-bg); border-radius: 15px;
+    overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-#menu-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: fadeIn 0.5s;
-}
+#menu-img { width: 100%; height: 100%; object-fit: cover; }
+.menu-emoji { font-size: 3rem; }
 
-.menu-emoji {
-    font-size: 4rem;
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-.menu-name {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--accent-color);
-    margin-bottom: 0.5rem;
-}
-
-.menu-category {
-    font-size: 0.9rem;
-    color: #666;
-    font-weight: 500;
-}
+.menu-name { font-size: 1.3rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.3rem; }
+.menu-category { font-size: 0.85rem; color: #666; font-weight: 500; margin-bottom: 1rem; }
 .dark-mode .menu-category { color: #aaa; }
 
-/* 결과 레이블 공통 */
-.label-wrapper { margin-bottom: 15px; text-align: left; }
-.label-text { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
-.progress-bar {
-    width: 100%; height: 12px; background-color: var(--bg-color);
-    border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color);
+.recipe-container {
+    text-align: left;
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    border: 1px solid var(--border-color);
+    max-height: 300px;
+    overflow-y: auto;
 }
-.progress-fill { height: 100%; background: var(--accent-color); transition: width 0.3s ease; }
+
+.recipe-section { margin-bottom: 1.5rem; }
+.recipe-section h3 { font-size: 1rem; color: var(--accent-color); margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
+.recipe-section p { font-size: 0.9rem; line-height: 1.6; color: var(--text-color); }
+.recipe-section ol { padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-color); }
+.recipe-section li { margin-bottom: 0.5rem; line-height: 1.5; }
 
 /* 공통 버튼 */
 .main-btn {
-    width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 700;
+    width: 100%; padding: 0.9rem; font-size: 1rem; font-weight: 700;
     color: white; background-color: var(--accent-color);
-    border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s;
+    border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s;
 }
 .main-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,123,255,0.2); }
 
 .theme-toggle {
     position: absolute; top: 1.5rem; right: 1.5rem;
     background: var(--bg-color); border: 1px solid var(--border-color);
-    width: 35px; height: 35px; border-radius: 50%; cursor: pointer;
+    width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
 }
-
-.disqus-count { margin-top: 2rem; text-align: left; }
-.dsq-count-link { color: var(--accent-color); text-decoration: none; font-weight: bold; font-size: 0.85rem; }
 
 .divider { margin: 2rem 0; border: 0; border-top: 1px solid var(--border-color); }
-.inquiry-form { text-align: left; }
-.form-group { margin-bottom: 1rem; }
-.form-group label { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; }
-.form-group input, .form-group textarea {
-    width: 100%; padding: 0.7rem; border: 1px solid var(--border-color);
-    border-radius: 8px; background: var(--bg-color); color: var(--text-color);
-}
+.inquiry-form h2 { font-size: 1.2rem; margin-bottom: 1rem; }
+.form-group label { font-size: 0.8rem; }
+.form-group input, .form-group textarea { padding: 0.6rem; font-size: 0.9rem; }
 
-.submit-btn {
-    width: 100%; padding: 0.8rem; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer;
-}
+.submit-btn { width: 100%; padding: 0.8rem; font-weight: 600; }
