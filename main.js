@@ -24,101 +24,77 @@ const recipeContainer = document.getElementById('recipe-container');
 const recipeIngredients = document.getElementById('recipe-ingredients');
 const recipeSteps = document.getElementById('recipe-steps');
 
-// 한국인이 즐겨 먹는 모든 음식 데이터베이스 (이미지 최적화)
+// 한국인이 즐겨 먹는 모든 음식 데이터베이스 (다양성 확보)
 const allMenus = [
     {
         name: "치킨",
         category: "튀김 | 닭고기",
         img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=400&q=80",
         ingredients: "생닭 1마리, 튀김가루 2컵, 우유 200ml, 소금, 후추, 식용유",
-        steps: [
-            "닭을 손질한 뒤 우유에 20분간 담가 잡내를 제거합니다.",
-            "소금과 후추로 밑간을 합니다.",
-            "튀김가루와 물을 섞어 반죽을 만들고 닭에 입힙니다.",
-            "170도 기름에서 10~12분간 바삭하게 튀겨냅니다.",
-            "한 번 더 튀기면 훨씬 바삭해집니다."
-        ]
+        steps: ["닭을 손질한 뒤 우유에 20분간 담가 잡내를 제거합니다.", "소금과 후추로 밑간을 합니다.", "튀김가루와 물을 섞어 반죽을 만들고 닭에 입힙니다.", "170도 기름에서 10~12분간 바삭하게 튀겨냅니다.", "한 번 더 튀기면 훨씬 바삭해집니다."]
     },
     {
         name: "피자",
         category: "오븐 | 밀가루",
         img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80",
         ingredients: "도우 반죽, 토마토 소스, 모짜렐라 치즈, 페퍼로니, 피망, 양파",
-        steps: [
-            "도우를 넓게 펴고 토마토 소스를 골고루 바릅니다.",
-            "치즈를 듬뿍 올린 뒤 원하는 토핑을 더합니다.",
-            "200도 예열된 오븐에서 10~15분간 굽습니다.",
-            "치즈가 노릇하게 녹으면 완성입니다."
-        ]
+        steps: ["도우를 넓게 펴고 토마토 소스를 골고루 바릅니다.", "치즈를 듬뿍 올린 뒤 원하는 토핑을 더합니다.", "200도 예열된 오븐에서 10~15분간 굽습니다.", "치즈가 노릇하게 녹으면 완성입니다."]
     },
     {
         name: "짜장면",
         category: "면 | 중식",
         img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=400&q=80",
         ingredients: "중면, 춘장 4큰술, 돼지고기 150g, 양배추, 양파, 감자, 설탕 1큰술, 전분물",
-        steps: [
-            "야채와 고기를 깍둑썰기하여 기름에 볶습니다.",
-            "춘장을 넣고 충분히 볶아 향을 냅니다.",
-            "물을 붓고 재료가 익을 때까지 끓인 뒤 전분물로 농도를 맞춥니다.",
-            "삶은 면 위에 소스를 듬뿍 올려 비벼 먹습니다."
-        ]
+        steps: ["야채와 고기를 깍둑썰기하여 기름에 볶습니다.", "춘장을 넣고 충분히 볶아 향을 냅니다.", "물을 붓고 재료가 익을 때까지 끓인 뒤 전분물로 농도를 맞춥니다.", "삶은 면 위에 소스를 듬뿍 올려 비벼 먹습니다."]
     },
     {
         name: "파스타",
         category: "면 | 이탈리안",
         img: "https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&w=400&q=80",
         ingredients: "스파게티면, 마늘 5알, 베이컨 3줄, 양파, 생크림 200ml, 우유 100ml, 파마산 치즈",
-        steps: [
-            "면을 소금물에 8분간 삶습니다.",
-            "팬에 마늘과 베이컨을 볶아 향을 냅니다.",
-            "생크림과 우유를 붓고 끓이다가 치즈로 간을 합니다.",
-            "삶은 면을 넣고 소스가 잘 배어들도록 볶아줍니다."
-        ]
+        steps: ["면을 소금물에 8분간 삶습니다.", "팬에 마늘과 베이컨을 볶아 향을 냅니다.", "생크림과 우유를 붓고 끓이다가 치즈로 간을 합니다.", "삶은 면을 넣고 소스가 잘 배어들도록 볶아줍니다."]
     },
     {
         name: "돈가스",
         category: "튀김 | 돼지고기",
         img: "https://images.unsplash.com/photo-1591814448473-7af5743a699c?auto=format&fit=crop&w=400&q=80",
         ingredients: "돼지등심 200g, 밀가루, 계란, 빵가루, 소금, 후추",
-        steps: [
-            "고기를 두드려 부드럽게 한 뒤 소금, 후추로 간을 합니다.",
-            "밀가루 -> 계란물 -> 빵가루 순으로 옷을 입힙니다.",
-            "기름에 노릇하게 튀겨냅니다.",
-            "돈가스 소스를 곁들여 완성합니다."
-        ]
+        steps: ["고기를 두드려 부드럽게 한 뒤 소금, 후추로 간을 합니다.", "밀가루 -> 계란물 -> 빵가루 순으로 옷을 입힙니다.", "기름에 노릇하게 튀겨냅니다.", "돈가스 소스를 곁들여 완성합니다."]
     },
     {
-        name: "초밥",
-        category: "밥 | 일식",
-        img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=400&q=80",
-        ingredients: "밥, 식초, 설탕, 소금, 고추냉이, 생선회(연어, 광어 등)",
-        steps: [
-            "밥에 단초물(식초:설탕:소금=3:2:1)을 넣고 잘 섞습니다.",
-            "손에 물을 묻히고 밥을 한입 크기로 쥡니다.",
-            "고추냉이를 살짝 바르고 그 위에 신선한 회를 올립니다."
-        ]
+        name: "비빔밥",
+        category: "밥 | 한식",
+        img: "https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=400&q=80",
+        ingredients: "밥 1공기, 콩나물, 시금치, 고사리, 당근, 소고기 볶음, 고추장, 참기름",
+        steps: ["각종 나물을 데치고 볶아 준비합니다.", "소고기는 잘게 썰어 간장 양념에 볶습니다.", "밥 위에 나물과 고기를 예쁘게 담습니다.", "고추장과 참기름을 올려 비벼 먹습니다."]
     },
     {
-        name: "김치찌개",
-        category: "찌개 | 한식",
-        img: "https://images.unsplash.com/photo-1620031618110-38c823631972?auto=format&fit=crop&w=400&q=80",
-        ingredients: "잘 익은 김치, 돼지고기, 두부, 대파, 고춧가루, 다진 마늘",
-        steps: [
-            "돼지고기와 김치를 충분히 볶습니다.",
-            "물을 붓고 고춧가루와 마늘을 넣어 끓입니다.",
-            "두부와 대파를 넣고 한소끔 더 끓여 완성합니다."
-        ]
+        name: "떡볶이",
+        category: "분식 | 한식",
+        img: "https://images.unsplash.com/photo-1624538570395-654a8a044810?auto=format&fit=crop&w=400&q=80",
+        ingredients: "떡볶이 떡 300g, 어묵 2장, 대파, 고추장 2큰술, 고춧가루 1큰술, 설탕 2큰술, 물 2컵",
+        steps: ["물을 끓이고 고추장, 고춧가루, 설탕을 풀어 양념을 만듭니다.", "떡과 어묵을 넣고 국물이 걸쭉해질 때까지 끓입니다.", "대파를 넣고 한소끔 더 끓여 완성합니다."]
     },
     {
-        name: "제육볶음",
-        category: "볶음 | 한식",
-        img: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=400&q=80",
-        ingredients: "돼지고기 앞다리살, 고추장, 고춧가루, 간장, 설탕, 양파, 파",
-        steps: [
-            "양념장을 만들어 고기에 30분간 재워둡니다.",
-            "달군 팬에 고기를 먼저 볶다가 야채를 넣습니다.",
-            "강불에서 빠르게 볶아 불맛을 입힙니다."
-        ]
+        name: "라멘",
+        category: "면 | 일식",
+        img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=400&q=80",
+        ingredients: "라면사리, 차슈(돼지고기), 아지타마고(반숙계란), 대파, 숙주, 사골육수",
+        steps: ["사골육수를 끓이고 간장이나 미소로 간을 합니다.", "면을 삶아 그릇에 담습니다.", "육수를 붓고 차슈, 계란, 파, 숙주를 고명으로 올립니다."]
+    },
+    {
+        name: "스테이크",
+        category: "그릴 | 양식",
+        img: "https://images.unsplash.com/photo-1546241072-48010ad28c2c?auto=format&fit=crop&w=400&q=80",
+        ingredients: "소고기 등심 또는 안심 250g, 올리브유, 버터, 마늘, 로즈마리, 소금, 후추",
+        steps: ["고기에 소금, 후추, 올리브유로 시즈닝을 합니다.", "팬을 강불로 달군 뒤 고기를 올리고 시어링합니다.", "버터와 마늘을 넣고 베이스팅하며 원하는 굽기로 익힙니다.", "5분간 레스팅 후 썰어 냅니다."]
+    },
+    {
+        name: "감자탕",
+        category: "탕 | 한식",
+        img: "https://images.unsplash.com/photo-1583224933031-629237077a06?auto=format&fit=crop&w=400&q=80",
+        ingredients: "돼지등뼈 1kg, 시래기, 감자, 대파, 들깨가루, 된장, 고춧가루, 다진 마늘",
+        steps: ["등뼈를 핏물을 빼고 한 번 데쳐 불순물을 제거합니다.", "물에 등뼈, 된장, 마늘을 넣고 1시간 이상 푹 끓입니다.", "시래기와 감자, 양념장을 넣고 더 끓입니다.", "들깨가루와 대파를 듬뿍 넣어 마무리합니다."]
     }
 ];
 
@@ -194,6 +170,17 @@ tabBtns.forEach(btn => {
     });
 });
 
+// 댓글 수 클릭 시 스크롤 (이벤트 위임 사용으로 안정성 확보)
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.dsq-count-link')) {
+        e.preventDefault();
+        const target = document.getElementById('comment-area');
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
+
 // 3. 로또 번호 생성
 generateBtn.addEventListener('click', () => {
     numbersContainer.innerHTML = '';
@@ -218,7 +205,6 @@ async function initModel() {
     if (!model) {
         const modelURL = URL + "model.json";
         const metadataURL = URL + "metadata.json";
-        model = await tmImage.load(modelURL, metadataDBURL); // Note: Fix typo DBURL -> URL in next pass if needed, but following logic
         model = await tmImage.load(modelURL, metadataURL);
         maxPredictions = model.getTotalClasses();
     }
@@ -259,14 +245,20 @@ async function predict(imgElement) {
     }
 }
 
-// 5. 전체 메뉴 및 레시피 추천
+// 5. 전체 메뉴 및 레시피 추천 (중복 방지 로직 추가)
+let lastMenuIdx = -1;
 recommendMenuBtn.addEventListener('click', () => {
     menuDisplay.classList.add('loading');
     menuName.innerText = '메뉴 탐색 중...';
     recipeContainer.style.display = 'none';
     
     setTimeout(() => {
-        const randomIdx = Math.floor(Math.random() * allMenus.length);
+        let randomIdx;
+        do {
+            randomIdx = Math.floor(Math.random() * allMenus.length);
+        } while (randomIdx === lastMenuIdx && allMenus.length > 1);
+        
+        lastMenuIdx = randomIdx;
         const recipe = allMenus[randomIdx];
 
         menuEmoji.style.display = 'none';

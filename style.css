@@ -35,10 +35,10 @@ body {
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 90%;
-    max-width: 480px;
+    max-width: 520px;
     position: relative;
     border: 1px solid var(--border-color);
-    margin: 20px 0;
+    margin: 40px 0;
 }
 
 /* 탭 스타일 */
@@ -52,7 +52,7 @@ body {
 
 .tab-btn {
     flex: 1;
-    padding: 10px;
+    padding: 12px 10px;
     border: none;
     background: transparent;
     color: var(--text-color);
@@ -60,7 +60,7 @@ body {
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.2s;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .tab-btn.active {
@@ -135,7 +135,7 @@ body {
 .recipe-container {
     text-align: left;
     background: var(--card-bg);
-    padding: 1rem;
+    padding: 1.2rem;
     border-radius: 12px;
     margin-top: 1rem;
     border: 1px solid var(--border-color);
@@ -145,27 +145,44 @@ body {
 
 .recipe-section { margin-bottom: 1.5rem; }
 .recipe-section h3 { font-size: 1rem; color: var(--accent-color); margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
-.recipe-section p { font-size: 0.9rem; line-height: 1.6; color: var(--text-color); }
-.recipe-section ol { padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-color); }
-.recipe-section li { margin-bottom: 0.5rem; line-height: 1.5; }
+.recipe-section p { font-size: 0.95rem; line-height: 1.6; color: var(--text-color); }
+.recipe-section ol { padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-color); }
+.recipe-section li { margin-bottom: 0.6rem; line-height: 1.5; }
 
 /* 공통 버튼 */
 .main-btn {
-    width: 100%; padding: 0.9rem; font-size: 1rem; font-weight: 700;
+    width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 700;
     color: white; background-color: var(--accent-color);
-    border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s;
+    border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s;
 }
 .main-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,123,255,0.2); }
 
 .theme-toggle {
     position: absolute; top: 1.5rem; right: 1.5rem;
     background: var(--bg-color); border: 1px solid var(--border-color);
-    width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
 }
 
-.divider { margin: 2rem 0; border: 0; border-top: 1px solid var(--border-color); }
-.inquiry-form h2 { font-size: 1.2rem; margin-bottom: 1rem; }
-.form-group label { font-size: 0.8rem; }
-.form-group input, .form-group textarea { padding: 0.6rem; font-size: 0.9rem; }
+.divider { margin: 2.5rem 0; border: 0; border-top: 1px solid var(--border-color); }
 
-.submit-btn { width: 100%; padding: 0.8rem; font-weight: 600; }
+/* 제휴 문의 UI 개선 */
+.inquiry-form { text-align: left; padding: 0 5px; }
+.inquiry-form h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
+.form-group { margin-bottom: 1.2rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; }
+.form-group input, .form-group textarea {
+    width: 100%; padding: 0.8rem; border: 1px solid var(--border-color);
+    border-radius: 10px; background: var(--bg-color); color: var(--text-color);
+    font-size: 1rem; box-sizing: border-box;
+}
+.form-group textarea { height: 120px; resize: vertical; }
+
+.submit-btn {
+    width: 100%; padding: 1rem; font-weight: 700; font-size: 1.1rem;
+    background: #28a745; color: white; border: none; border-radius: 10px;
+    cursor: pointer; transition: background 0.2s;
+}
+.submit-btn:hover { background: #218838; }
+
+.disqus-count { margin-top: 2rem; text-align: left; }
+.dsq-count-link { color: var(--accent-color); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
