@@ -24,7 +24,7 @@ const recipeContainer = document.getElementById('recipe-container');
 const recipeIngredients = document.getElementById('recipe-ingredients');
 const recipeSteps = document.getElementById('recipe-steps');
 
-// 한국인이 즐겨 먹는 모든 음식 데이터베이스 (다양성 확보)
+// 한국인이 즐겨 먹는 모든 음식 데이터베이스
 const allMenus = [
     {
         name: "치킨",
@@ -170,7 +170,7 @@ tabBtns.forEach(btn => {
     });
 });
 
-// 댓글 수 클릭 시 스크롤 (이벤트 위임 사용으로 안정성 확보)
+// 댓글 수 클릭 시 스크롤
 document.addEventListener('click', (e) => {
     if (e.target.closest('.dsq-count-link')) {
         e.preventDefault();
@@ -245,21 +245,29 @@ async function predict(imgElement) {
     }
 }
 
-// 5. 전체 메뉴 및 레시피 추천 (중복 방지 로직 추가)
-let lastMenuIdx = -1;
+// 5. 전체 메뉴 및 레시피 추천 (셔플 기반 큐로 중복 완전 방지)
+let menuQueue = [];
+
+function shuffleMenus() {
+    menuQueue = [...Array(allMenus.length).keys()];
+    for (let i = menuQueue.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [menuQueue[i], menuQueue[j]] = [menuQueue[j], menuQueue[i]];
+    }
+}
+
 recommendMenuBtn.addEventListener('click', () => {
     menuDisplay.classList.add('loading');
     menuName.innerText = '메뉴 탐색 중...';
     recipeContainer.style.display = 'none';
     
     setTimeout(() => {
-        let randomIdx;
-        do {
-            randomIdx = Math.floor(Math.random() * allMenus.length);
-        } while (randomIdx === lastMenuIdx && allMenus.length > 1);
+        if (menuQueue.length === 0) {
+            shuffleMenus();
+        }
         
-        lastMenuIdx = randomIdx;
-        const recipe = allMenus[randomIdx];
+        const menuIdx = menuQueue.pop();
+        const recipe = allMenus[menuIdx];
 
         menuEmoji.style.display = 'none';
         menuImg.src = recipe.img;
