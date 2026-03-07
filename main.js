@@ -13,27 +13,11 @@ const loadingSpinner = document.getElementById('loading-spinner');
 
 // 저녁 메뉴 추천 요소
 const recommendMenuBtn = document.getElementById('recommend-menu-btn');
+const menuDisplay = document.getElementById('menu-display');
 const menuEmoji = document.getElementById('menu-emoji');
+const menuImg = document.getElementById('menu-img');
 const menuName = document.getElementById('menu-name');
-
-// 저녁 메뉴 리스트
-const dinnerMenus = [
-    { name: '삼겹살', emoji: '🥓' },
-    { name: '치킨', emoji: '🍗' },
-    { name: '초밥', emoji: '🍣' },
-    { name: '김치찌개', emoji: '🥘' },
-    { name: '파스타', emoji: '🍝' },
-    { name: '햄버거', emoji: '🍔' },
-    { name: '비빔밥', emoji: '🥗' },
-    { name: '마라탕', emoji: '🍜' },
-    { name: '짜장면', emoji: '🥢' },
-    { name: '돈가스', emoji: '🍱' },
-    { name: '스테이크', emoji: '🥩' },
-    { name: '쌀국수', emoji: '🍲' },
-    { name: '피자', emoji: '🍕' },
-    { name: '떡볶이', emoji: '🌶️' },
-    { name: '냉면', emoji: '❄️' }
-];
+const menuCategory = document.getElementById('menu-category');
 
 // 1. 테마 관리
 const updateThemeUI = (isDark) => {
@@ -62,9 +46,8 @@ function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'lotto' ? baseUrl : baseUrl + "#!" + tabId;
     
-    // 식별자 관리
     let identifier;
-    if (tabId === 'lotto') identifier = undefined; // 기존 댓글용
+    if (tabId === 'lotto') identifier = undefined;
     else if (tabId === 'gender') identifier = "gender-face-test-v1";
     else if (tabId === 'dinner') identifier = "dinner-menu-recommend-v1";
 
@@ -91,7 +74,6 @@ function resetDisqus(tabId) {
         })();
     }
     
-    // 댓글 수 링크 갱신
     document.querySelectorAll('.dsq-count-link').forEach(link => {
         const id = link.id.split('-')[0];
         const linkUrl = id === 'lotto' ? baseUrl : baseUrl + "#!" + id;
@@ -100,7 +82,6 @@ function resetDisqus(tabId) {
     });
 }
 
-// 초기 로드
 resetDisqus('lotto');
 
 // 탭 전환
@@ -222,20 +203,33 @@ async function predict(imgElement) {
     }
 }
 
-// 5. 저녁 메뉴 추천
-recommendMenuBtn.addEventListener('click', () => {
-    // 애니메이션 효과를 위해 잠시 텍스트 변경
-    menuName.innerText = '어디보자...';
-    menuEmoji.style.animation = 'none';
-    menuEmoji.offsetHeight; // reflow
-    menuEmoji.style.animation = 'bounce 0.5s infinite';
+// 5. 저녁 메뉴 추천 (고도화: 외부 API 연동)
+recommendMenuBtn.addEventListener('click', async () => {
+    // 로딩 상태 표시
+    menuDisplay.classList.add('loading');
+    menuName.innerText = '메뉴 탐색 중...';
+    menuCategory.innerText = '';
+    
+    try {
+        // TheMealDB API 호출 (무작위 요리 정보)
+        const response = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+        const data = await response.json();
+        const meal = data.meals[0];
 
-    setTimeout(() => {
-        const randomIdx = Math.floor(Math.random() * dinnerMenus.length);
-        const selected = dinnerMenus[randomIdx];
-        
-        menuEmoji.innerText = selected.emoji;
-        menuName.innerText = selected.name;
-        menuEmoji.style.animation = 'bounce 2s infinite';
-    }, 600);
+        // 이미지 로딩 처리
+        const img = new Image();
+        img.src = meal.strMealThumb;
+        img.onload = () => {
+            menuEmoji.style.display = 'none';
+            menuImg.src = meal.strMealThumb;
+            menuImg.style.display = 'block';
+            menuName.innerText = meal.strMeal;
+            menuCategory.innerText = `${meal.strArea} | ${meal.strCategory}`;
+            menuDisplay.classList.remove('loading');
+        };
+    } catch (error) {
+        console.error('메뉴 추천 오류:', error);
+        menuName.innerText = '추천을 불러오지 못했습니다.';
+        menuDisplay.classList.remove('loading');
+    }
 });
