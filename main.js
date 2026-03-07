@@ -171,11 +171,13 @@ async function predict(imgElement) {
     }
 }
 
-// 5. 전체 메뉴 및 레시피 추천 (셔플 기반 큐로 중복 완전 방지)
+// 5. 전체 메뉴 및 레시피 추천 (셔플 기반 큐 및 이미지 검증 로직 강화)
 let menuQueue = [];
+const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=500&q=80"; // 음식 기본 이미지
 
 function shuffleMenus() {
-    menuQueue = [...Array(allMenus.length).keys()];
+    const menus = window.allMenus || [];
+    menuQueue = [...Array(menus.length).keys()];
     for (let i = menuQueue.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [menuQueue[i], menuQueue[j]] = [menuQueue[j], menuQueue[i]];
@@ -183,9 +185,16 @@ function shuffleMenus() {
 }
 
 recommendMenuBtn.addEventListener('click', () => {
+    const menus = window.allMenus || [];
+    if (menus.length === 0) return;
+
     menuDisplay.classList.add('loading');
-    menuName.innerText = '메뉴 탐색 중...';
+    menuName.innerText = '최고의 메뉴 탐색 중...';
     recipeContainer.style.display = 'none';
+    
+    // 이미지 컨테이너 초기화 및 스피너 추가
+    const imgContainer = document.getElementById('menu-image-container');
+    imgContainer.innerHTML = '<div class="spinner"></div>';
     
     setTimeout(() => {
         if (menuQueue.length === 0) {
@@ -193,23 +202,31 @@ recommendMenuBtn.addEventListener('click', () => {
         }
         
         const menuIdx = menuQueue.pop();
-        const recipe = allMenus[menuIdx];
+        const recipe = menus[menuIdx];
 
-        menuEmoji.style.display = 'none';
-        menuImg.src = recipe.img;
-        menuImg.style.display = 'block';
-        menuName.innerText = recipe.name;
-        menuCategory.innerText = recipe.category;
+        // 이미지 검증 로직
+        const imgObj = new Image();
+        imgObj.src = recipe.img;
 
-        recipeIngredients.innerText = recipe.ingredients;
-        recipeSteps.innerHTML = '';
-        recipe.steps.forEach(step => {
-            const li = document.createElement('li');
-            li.innerText = step;
-            recipeSteps.appendChild(li);
-        });
+        const displayRecipe = (src) => {
+            imgContainer.innerHTML = `<img src="${src}" id="menu-img" style="display: block;">`;
+            menuName.innerText = recipe.name;
+            menuCategory.innerText = recipe.category;
+            recipeIngredients.innerText = recipe.ingredients;
+            recipeSteps.innerHTML = '';
+            recipe.steps.forEach(step => {
+                const li = document.createElement('li');
+                li.innerText = step;
+                recipeSteps.appendChild(li);
+            });
+            recipeContainer.style.display = 'block';
+            menuDisplay.classList.remove('loading');
+        };
 
-        recipeContainer.style.display = 'block';
-        menuDisplay.classList.remove('loading');
-    }, 800);
+        imgObj.onload = () => displayRecipe(recipe.img);
+        imgObj.onerror = () => {
+            console.warn(`이미지 로드 실패: ${recipe.name}. 기본 이미지로 대체합니다.`);
+            displayRecipe(DEFAULT_IMAGE);
+        };
+    }, 600);
 });

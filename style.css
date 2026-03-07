@@ -119,13 +119,33 @@ body {
 }
 
 .menu-image-container {
-    width: 150px; height: 150px; margin: 0 auto 1rem;
+    width: 180px; height: 180px; margin: 0 auto 1.5rem;
     display: flex; align-items: center; justify-content: center;
-    background: var(--card-bg); border-radius: 15px;
-    overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: var(--card-bg); border-radius: 20px;
+    overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    position: relative;
+    border: 2px solid var(--border-color);
 }
 
-#menu-img { width: 100%; height: 100%; object-fit: cover; }
+/* 스피너 스타일 */
+.spinner {
+    width: 40px; height: 40px;
+    border: 4px solid rgba(0, 123, 255, 0.1);
+    border-left-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: absolute;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+#menu-img { 
+    width: 100%; height: 100%; object-fit: cover; 
+    display: none; /* 로드 완료 전까지 숨김 */
+    animation: fadeIn 0.5s;
+}
 .menu-emoji { font-size: 3rem; }
 
 .menu-name { font-size: 1.3rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.3rem; }
