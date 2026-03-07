@@ -155,9 +155,8 @@ async function initModel() {
     }
 }
 
-imageInput.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+const handleFile = (file) => {
+    if (!file || !file.type.startsWith('image/')) return;
     const reader = new FileReader();
     reader.onload = async (event) => {
         previewImage.src = event.target.result;
@@ -167,7 +166,38 @@ imageInput.addEventListener('change', async (e) => {
         loadingSpinner.style.display = 'none';
     };
     reader.readAsDataURL(file);
+};
+
+imageInput.addEventListener('change', (e) => {
+    handleFile(e.target.files[0]);
 });
+
+const uploadArea = document.getElementById('upload-area');
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }, false);
+});
+
+['dragenter', 'dragover'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, () => {
+        uploadArea.classList.add('drag-over');
+    }, false);
+});
+
+['dragleave', 'dragend', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, () => {
+        uploadArea.classList.remove('drag-over');
+    }, false);
+});
+
+uploadArea.addEventListener('drop', (e) => {
+    const dt = e.dataTransfer;
+    const file = dt.files[0];
+    handleFile(file);
+}, false);
 
 async function predict(imgElement) {
     await initModel();

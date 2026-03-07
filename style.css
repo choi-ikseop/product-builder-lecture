@@ -104,7 +104,7 @@ body {
     cursor: pointer; transition: all 0.2s;
 }
 
-.upload-area:hover { border-color: var(--accent-color); background: rgba(0,123,255,0.05); }
+.upload-area:hover, .upload-area.drag-over { border-color: var(--accent-color); background: rgba(0,123,255,0.05); }
 .upload-label { cursor: pointer; display: block; }
 .upload-icon { font-size: 3rem; margin-bottom: 10px; }
 
