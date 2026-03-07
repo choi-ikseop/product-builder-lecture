@@ -10,6 +10,7 @@ const generateBtn = document.getElementById('generate-btn');
 const imageInput = document.getElementById('image-input');
 const previewImage = document.getElementById('preview-image');
 const loadingSpinner = document.getElementById('loading-spinner');
+const countLink = document.getElementById('count-link');
 
 // 1. 테마 관리
 const updateThemeUI = (isDark) => {
@@ -33,24 +34,26 @@ themeToggle.addEventListener('click', () => {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
-// 2. Disqus 탭별 초기화 로직
+// 2. Disqus 설정
 function resetDisqus(tabId) {
-    const canonicalUrl = window.location.origin + window.location.pathname + "#!" + tabId;
-    const identifier = "productbuilder-tab-" + tabId;
+    // 기존 댓글 복구를 위해 'lotto' 탭은 기본 URL과 기본 식별자를 사용하도록 시도
+    const baseUrl = window.location.origin + window.location.pathname;
+    const pageUrl = tabId === 'lotto' ? baseUrl : baseUrl + "#!" + tabId;
+    // lotto는 예전에 식별자 없이 생성되었을 가능성이 높으므로 null 또는 기본값 부여
+    const identifier = tabId === 'lotto' ? 'lotto-main' : "productbuilder-tab-" + tabId;
 
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({
             reload: true,
             config: function () {
                 this.page.identifier = identifier;
-                this.page.url = canonicalUrl;
+                this.page.url = pageUrl;
                 this.page.title = tabId === 'lotto' ? '로또 번호 생성기' : 'AI 남녀상 테스트';
             }
         });
     } else {
-        // 처음 로드할 때
         window.disqus_config = function () {
-            this.page.url = canonicalUrl;
+            this.page.url = pageUrl;
             this.page.identifier = identifier;
             this.page.title = tabId === 'lotto' ? '로또 번호 생성기' : 'AI 남녀상 테스트';
         };
@@ -61,23 +64,23 @@ function resetDisqus(tabId) {
             (d.head || d.body).appendChild(s);
         })();
     }
+    
+    // 댓글 수 링크의 href를 Disqus가 인식할 수 있는 형태로 유지
+    countLink.setAttribute('href', pageUrl + '#disqus_thread');
 }
 
-// 초기 탭에 맞춰 Disqus 로드
+// 초기 로드
 resetDisqus('lotto');
 
-// 탭 전환 이벤트에 Disqus 리셋 추가
+// 탭 전환
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const tabId = btn.getAttribute('data-tab');
-        
         tabBtns.forEach(b => b.classList.remove('active'));
         tabContents.forEach(c => c.classList.remove('active'));
-        
         btn.classList.add('active');
         document.getElementById(`${tabId}-section`).classList.add('active');
-
-        // 탭 변경 시 해당 탭 전용 댓글창 로드
+        
         resetDisqus(tabId);
     });
 });
@@ -121,7 +124,6 @@ imageInput.addEventListener('change', async (e) => {
     reader.onload = async (event) => {
         previewImage.src = event.target.result;
         previewImage.style.display = 'block';
-        
         loadingSpinner.style.display = 'block';
         await predict(previewImage);
         loadingSpinner.style.display = 'none';
@@ -132,14 +134,11 @@ imageInput.addEventListener('change', async (e) => {
 async function predict(imgElement) {
     await initModel();
     const prediction = await model.predict(imgElement);
-    
     labelContainer = document.getElementById("label-container");
     labelContainer.innerHTML = '';
-
     for (let i = 0; i < maxPredictions; i++) {
         const className = prediction[i].className;
         const prob = (prediction[i].probability * 100).toFixed(0);
-        
         const wrapper = document.createElement("div");
         wrapper.className = "label-wrapper";
         wrapper.innerHTML = `

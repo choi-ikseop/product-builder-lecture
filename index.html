@@ -71,10 +71,10 @@
 
         <hr class="divider">
 
-        <!-- Disqus 댓글 영역 (탭 하단 공통 배치하되 탭마다 identifier 변경) -->
-        <div class="disqus-wrapper">
+        <!-- Disqus 댓글 영역 -->
+        <div class="disqus-wrapper" id="comment-area">
             <div class="disqus-count">
-                <a href="#disqus_thread">댓글 보기</a>
+                <a href="#comment-area" id="count-link">댓글 보기</a>
             </div>
             <div id="disqus_thread"></div>
         </div>
@@ -102,6 +102,7 @@
     </div>
 
     <script src="main.js"></script>
+    <!-- count.js는 href에 #disqus_thread가 포함된 링크의 텍스트를 자동으로 바꿉니다. -->
     <script id="dsq-count-scr" src="//productbuilder-j0ykvmteku.disqus.com/count.js" async></script>
 </body>
 </html>
