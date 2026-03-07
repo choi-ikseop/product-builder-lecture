@@ -10,7 +10,6 @@ const generateBtn = document.getElementById('generate-btn');
 const imageInput = document.getElementById('image-input');
 const previewImage = document.getElementById('preview-image');
 const loadingSpinner = document.getElementById('loading-spinner');
-const countLink = document.getElementById('count-link');
 
 // 1. 테마 관리
 const updateThemeUI = (isDark) => {
@@ -36,11 +35,10 @@ themeToggle.addEventListener('click', () => {
 
 // 2. Disqus 설정
 function resetDisqus(tabId) {
-    // 기존 댓글 복구를 위해 'lotto' 탭은 기본 URL과 기본 식별자를 사용하도록 시도
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'lotto' ? baseUrl : baseUrl + "#!" + tabId;
-    // lotto는 예전에 식별자 없이 생성되었을 가능성이 높으므로 null 또는 기본값 부여
-    const identifier = tabId === 'lotto' ? 'lotto-main' : "productbuilder-tab-" + tabId;
+    // 'lotto' 탭은 기존 댓글 복구를 위해 식별자를 아예 주지 않거나 가장 초기의 것으로 설정
+    const identifier = tabId === 'lotto' ? undefined : "gender-face-test-v1";
 
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({
@@ -65,8 +63,15 @@ function resetDisqus(tabId) {
         })();
     }
     
-    // 댓글 수 링크의 href를 Disqus가 인식할 수 있는 형태로 유지
-    countLink.setAttribute('href', pageUrl + '#disqus_thread');
+    // 각 탭의 댓글 수 링크에 Disqus가 인식할 수 있는 href 설정
+    const lottoLink = document.getElementById('lotto-count-link');
+    const genderLink = document.getElementById('gender-count-link');
+    
+    lottoLink.setAttribute('href', baseUrl + '#disqus_thread');
+    lottoLink.setAttribute('data-disqus-url', baseUrl);
+    
+    genderLink.setAttribute('href', baseUrl + '#!gender#disqus_thread');
+    genderLink.setAttribute('data-disqus-url', baseUrl + "#!gender");
 }
 
 // 초기 로드
@@ -85,7 +90,16 @@ tabBtns.forEach(btn => {
     });
 });
 
-// 3. 로또 번호 생성
+// 댓글 수 클릭 시 부드러운 스크롤
+document.querySelectorAll('.dsq-count-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById('comment-area');
+        target.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+// 3. 로또 번호 생성 (기존 로직 동일)
 generateBtn.addEventListener('click', () => {
     numbersContainer.innerHTML = '';
     const numbers = new Set();
@@ -106,7 +120,7 @@ generateBtn.addEventListener('click', () => {
     });
 });
 
-// 4. AI 남녀상 테스트
+// 4. AI 남녀상 테스트 (기존 로직 동일)
 async function initModel() {
     if (!model) {
         const modelURL = URL + "model.json";
