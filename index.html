@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 남녀상 테스트</title>
+    <title>멀티 툴 서비스 (로또 & AI 테스트)</title>
     <link rel="stylesheet" href="style.css">
     
     <!-- 테마 초기화 스크립트 -->
@@ -24,12 +24,48 @@
 <body>
     <div class="container">
         <button id="theme-toggle" class="theme-toggle" title="테마 변경">☀️</button>
-        <h1>AI 남녀상 테스트</h1>
-        <p class="subtitle">AI가 분석하는 나의 얼굴상</p>
+        
+        <!-- 탭 메뉴 -->
+        <div class="tab-menu">
+            <button class="tab-btn active" data-tab="lotto">로또 추천</button>
+            <button class="tab-btn" data-tab="gender">AI 남녀상</button>
+        </div>
 
-        <div class="model-container">
-            <button type="button" id="start-btn" class="main-btn">테스트 시작하기</button>
-            <div id="webcam-container"></div>
+        <!-- 로또 섹션 -->
+        <div id="lotto-section" class="tab-content active">
+            <h1>로또 번호 생성기</h1>
+            <div class="lotto-image">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="ballGradient" cx="30%" cy="30%" r="70%">
+                            <stop offset="0%" stop-color="#FFEB3B"/>
+                            <stop offset="100%" stop-color="#FBC02D"/>
+                        </radialGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="45" fill="url(#ballGradient)"/>
+                    <circle cx="50" cy="50" r="28" fill="white" opacity="0.9"/>
+                    <text x="50" y="62" font-family="'Pretendard', sans-serif" font-size="32" font-weight="900" fill="#FBC02D" text-anchor="middle">7</text>
+                </svg>
+            </div>
+            <div id="numbers" class="numbers-container"></div>
+            <button id="generate-btn" class="main-btn">번호 생성하기</button>
+        </div>
+
+        <!-- 남녀상 테스트 섹션 -->
+        <div id="gender-section" class="tab-content">
+            <h1>AI 남녀상 테스트</h1>
+            <p class="subtitle">사진을 업로드하여 분석해보세요</p>
+            
+            <div class="upload-area" id="upload-area">
+                <input type="file" id="image-input" accept="image/*" hidden>
+                <label for="image-input" class="upload-label">
+                    <div class="upload-icon">📸</div>
+                    <span>사진 업로드하기</span>
+                </label>
+                <img id="preview-image" style="display: none; max-width: 100%; border-radius: 10px; margin-top: 10px;">
+            </div>
+
+            <div id="loading-spinner" style="display: none; margin: 20px 0;">분석 중...</div>
             <div id="label-container"></div>
         </div>
 
@@ -58,15 +94,6 @@
             <a href="#disqus_thread">댓글 보기</a>
         </div>
         <div id="disqus_thread"></div>
-        <script>
-            (function() {
-            var d = document, s = d.createElement('script');
-            s.src = 'https://productbuilder-j0ykvmteku.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
 
     <script src="main.js"></script>
