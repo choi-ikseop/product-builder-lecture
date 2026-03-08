@@ -184,8 +184,11 @@ generateBtn?.addEventListener('click', () => {
 // AI 관상
 async function initModel() {
     if (!model) {
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
+        // 캐시 방지를 위해 URL 뒤에 타임스탬프 추가 (Cache Busting)
+        const cacheBuster = "?v=" + Date.now();
+        const modelURL = URL + "model.json" + cacheBuster;
+        const metadataURL = URL + "metadata.json" + cacheBuster;
+        
         model = await tmImage.load(modelURL, metadataURL);
         maxPredictions = model.getTotalClasses();
     }
