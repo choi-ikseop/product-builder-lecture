@@ -33,8 +33,8 @@ function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'home' ? baseUrl : baseUrl + "#!" + tabId;
     
-    // 식별자를 더 명확하게 구분 (기존 댓글과 충돌 방지)
-    const identifier = "daily-tools-v3-" + tabId;
+    // 식별자 버전을 올려서 댓글 꼬임 방지
+    const identifier = "daily-tools-v4-" + tabId;
     
     const tabNameMap = {
         'home': '홈 페이지',
@@ -45,7 +45,6 @@ function resetDisqus(tabId) {
     };
     const currentTitle = tabNameMap[tabId] || 'Daily Tools';
 
-    // 게시판 제목 업데이트
     const discussionTitle = document.getElementById('discussion-title');
     if (discussionTitle) {
         discussionTitle.innerText = `💬 ${currentTitle} 토론장`;
@@ -75,21 +74,18 @@ function resetDisqus(tabId) {
     }
 }
 
-// 탭 전환 로직 (개선)
+// 탭 전환 로직
 function switchTab(tabId) {
     const isTool = ['lotto', 'gender', 'dinner'].includes(tabId);
     
-    // 1. 모든 버튼 상태 초기화
     document.querySelectorAll('.tab-btn, .nav-link, .feature-card').forEach(btn => {
         btn.classList.remove('active');
         if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active');
-        // 상단 네비게이션 "도구함" 활성화 처리
         if (isTool && btn.getAttribute('data-tab') === 'lotto' && btn.classList.contains('nav-link')) {
             btn.classList.add('active');
         }
     });
 
-    // 2. 레이아웃 제어
     if (isTool) {
         toolsLayout.classList.remove('hidden');
         document.getElementById('home-section').classList.add('hidden');
@@ -104,7 +100,6 @@ function switchTab(tabId) {
         document.getElementById('inquiry-section').classList.remove('hidden');
     }
 
-    // 3. 개별 탭 콘텐츠 제어
     tabContents.forEach(content => {
         if (content.id === `${tabId}-section`) {
             content.classList.remove('hidden');
@@ -113,15 +108,12 @@ function switchTab(tabId) {
         }
     });
 
-    // 4. 상단 이동
     window.scrollTo({ top: 0, behavior: 'smooth' });
     resetDisqus(tabId);
 }
 
-// 현재 활성 탭 추적 변수
 let activeTabId = 'home';
 
-// 이벤트 리스너 통합 등록
 document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-tab]');
     if (target) {
@@ -131,24 +123,20 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// 댓글 새로고침 버튼 이벤트
 document.getElementById('refresh-comments')?.addEventListener('click', () => {
     const btn = document.getElementById('refresh-comments');
     btn.innerText = '🔄 동기화 중...';
     btn.disabled = true;
-    
     resetDisqus(activeTabId);
-    
     setTimeout(() => {
         btn.innerText = '🔄 댓글 새로고침';
         btn.disabled = false;
     }, 1000);
 });
 
-// 초기 상태 설정
 switchTab('home');
 
-// --- 기존 도구 기능 (로또, AI, 메뉴) ---
+// --- 기존 도구 기능 ---
 const numbersContainer = document.getElementById('numbers');
 const generateBtn = document.getElementById('generate-btn');
 const imageInput = document.getElementById('image-input');
@@ -181,21 +169,38 @@ generateBtn?.addEventListener('click', () => {
     });
 });
 
-// AI 동물상
+// AI 동물상 (강력한 캐시 무력화 버전)
 async function initModel() {
-    // 캐시 방지를 위해 매번 최신 모델 정보를 체크
-    if (!model || model.getClassLabels().length < 3) {
-        console.log("최신 AI 모델을 서버에서 새로 불러옵니다...");
-        const cacheBuster = "?v=" + Date.now();
-        const modelURL = URL + "model.json" + cacheBuster;
-        const metadataURL = URL + "metadata.json" + cacheBuster;
-        
-        try {
+    const cacheBuster = "?v=" + Date.now();
+    
+    // 1. 먼저 metadata.json을 fetch로 직접 가져와서 실제 클래스 구성을 확인
+    try {
+        const metaResp = await fetch(URL + "metadata.json" + cacheBuster, { cache: 'no-store' });
+        const metaData = await metaResp.json();
+        const currentLabels = metaData.labels;
+        console.log("서버의 최신 라벨 목록:", currentLabels);
+
+        // 2. 현재 로드된 모델이 없거나 라벨 구성이 다르면 새로 로드
+        if (!model || model.getClassLabels().length !== currentLabels.length) {
+            console.log("모델 불일치 감지. 최신 모델을 강제로 다시 로드합니다.");
+            
+            // 기존 모델 명시적 해제 시도 (메모리 관리)
+            model = null; 
+            
+            const modelURL = URL + "model.json" + cacheBuster;
+            const metadataURL = URL + "metadata.json" + cacheBuster;
+            
             model = await tmImage.load(modelURL, metadataURL);
             maxPredictions = model.getTotalClasses();
-            console.log("모델 로드 성공! 인식 가능 항목:", model.getClassLabels());
-        } catch (e) {
-            console.error("모델 로드 실패:", e);
+            
+            console.log("모델 로드 성공! 최종 라벨:", model.getClassLabels());
+        }
+    } catch (e) {
+        console.error("모델 초기화 중 치명적 오류:", e);
+        // Fallback: 기본 로드 시도
+        if (!model) {
+            model = await tmImage.load(URL + "model.json", URL + "metadata.json");
+            maxPredictions = model.getTotalClasses();
         }
     }
 }
@@ -207,6 +212,11 @@ const handleFile = (file) => {
         previewImage.src = event.target.result;
         previewImage.style.display = 'block';
         loadingSpinner.style.display = 'block';
+        
+        // 결과창 초기화 (이전 결과 삭제)
+        const lblContainer = document.getElementById("label-container");
+        if (lblContainer) lblContainer.innerHTML = '';
+        
         await predict(previewImage);
         loadingSpinner.style.display = 'none';
     };
@@ -223,21 +233,32 @@ if (uploadArea) {
 }
 
 async function predict(imgElement) {
-    await initModel();
+    await initModel(); // 여기서 최신 모델임을 보장함
+    
     const prediction = await model.predict(imgElement);
     
-    // 결과 정렬 (높은 확률 순)
+    // 확률 높은 순 정렬
     prediction.sort((a, b) => b.probability - a.probability);
     
-    labelContainer = document.getElementById("label-container");
-    labelContainer.innerHTML = '';
-    for (let i = 0; i < maxPredictions; i++) {
+    const lblContainer = document.getElementById("label-container");
+    lblContainer.innerHTML = '';
+    
+    // 예측 결과의 실제 길이를 사용 (maxPredictions에 의존하지 않음)
+    for (let i = 0; i < prediction.length; i++) {
         const className = prediction[i].className;
         const prob = (prediction[i].probability * 100).toFixed(0);
         const wrapper = document.createElement("div");
         wrapper.className = "label-wrapper";
-        wrapper.innerHTML = `<div class="label-text"><span>${className}</span><span>${prob}%</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${prob}%"></div></div>`;
-        labelContainer.appendChild(wrapper);
+        wrapper.innerHTML = `
+            <div class="label-text">
+                <span>${className}</span>
+                <span>${prob}%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: ${prob}%"></div>
+            </div>
+        `;
+        lblContainer.appendChild(wrapper);
     }
 }
 
