@@ -1,4 +1,4 @@
-const URL = "https://teachablemachine.withgoogle.com/models/nohC-dlRd/";
+const URL = "https://teachablemachine.withgoogle.com/models/1LWpie6dk/";
 let model, labelContainer, maxPredictions;
 
 // DOM 요소
