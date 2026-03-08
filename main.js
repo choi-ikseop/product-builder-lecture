@@ -3,26 +3,8 @@ let model, labelContainer, maxPredictions;
 
 // DOM 요소
 const themeToggle = document.getElementById('theme-toggle');
-const tabBtns = document.querySelectorAll('.tab-btn, .nav-link[data-tab]'); // Header links too
 const tabContents = document.querySelectorAll('.tab-content');
-const numbersContainer = document.getElementById('numbers');
-const generateBtn = document.getElementById('generate-btn');
-const imageInput = document.getElementById('image-input');
-const previewImage = document.getElementById('preview-image');
-const loadingSpinner = document.getElementById('loading-spinner');
-
-// 저녁 메뉴 추천 요소
-const recommendMenuBtn = document.getElementById('recommend-menu-btn');
-const menuDisplay = document.getElementById('menu-display');
-const menuEmoji = document.getElementById('menu-emoji');
-const menuImg = document.getElementById('menu-img');
-const menuName = document.getElementById('menu-name');
-const menuCategory = document.getElementById('menu-category');
-
-// 레시피 요소
-const recipeContainer = document.getElementById('recipe-container');
-const recipeIngredients = document.getElementById('recipe-ingredients');
-const recipeSteps = document.getElementById('recipe-steps');
+const toolsLayout = document.getElementById('tools-layout');
 
 // 1. 테마 관리
 const updateThemeUI = (isDark) => {
@@ -49,8 +31,8 @@ themeToggle.addEventListener('click', () => {
 // 2. Disqus 설정
 function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
-    const pageUrl = tabId === 'lotto' ? baseUrl : baseUrl + "#!" + tabId;
-    let identifier = "daily-tools-" + tabId; // Unique per tab
+    const pageUrl = tabId === 'home' ? baseUrl : baseUrl + "#!" + tabId;
+    let identifier = "daily-tools-" + tabId;
 
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({
@@ -74,52 +56,78 @@ function resetDisqus(tabId) {
     }
 }
 
-// 탭 전환 로직 개선
+// 탭 전환 로직 (개선)
 function switchTab(tabId) {
-    // 버튼 상태 업데이트 (헤더/사이드바 모두)
-    document.querySelectorAll('.tab-btn, .nav-link').forEach(btn => {
-        if (btn.getAttribute('data-tab') === tabId) {
+    const isTool = ['lotto', 'gender', 'dinner'].includes(tabId);
+    
+    // 1. 모든 버튼 상태 초기화
+    document.querySelectorAll('.tab-btn, .nav-link, .feature-card').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active');
+        // 상단 네비게이션 "도구함" 활성화 처리
+        if (isTool && btn.getAttribute('data-tab') === 'lotto' && btn.classList.contains('nav-link')) {
             btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
         }
     });
 
-    // 콘텐츠 표시
+    // 2. 레이아웃 제어
+    if (isTool) {
+        toolsLayout.classList.remove('hidden');
+        document.getElementById('home-section').classList.add('hidden');
+        document.getElementById('inquiry-section').classList.add('hidden');
+    } else if (tabId === 'home') {
+        toolsLayout.classList.add('hidden');
+        document.getElementById('home-section').classList.remove('hidden');
+        document.getElementById('inquiry-section').classList.add('hidden');
+    } else if (tabId === 'inquiry') {
+        toolsLayout.classList.add('hidden');
+        document.getElementById('home-section').classList.add('hidden');
+        document.getElementById('inquiry-section').classList.remove('hidden');
+    }
+
+    // 3. 개별 탭 콘텐츠 제어
     tabContents.forEach(content => {
         if (content.id === `${tabId}-section`) {
-            content.classList.add('active');
             content.classList.remove('hidden');
-        } else {
-            content.classList.remove('active');
+        } else if (!content.classList.contains('home-section') && !content.classList.contains('inquiry-section')) {
             content.classList.add('hidden');
         }
     });
 
-    // 스크롤 조정 (모바일 배려)
-    if (window.innerWidth <= 768) {
-        window.scrollTo({ top: document.querySelector('.main-content').offsetTop - 80, behavior: 'smooth' });
-    }
-
+    // 4. 상단 이동
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     resetDisqus(tabId);
 }
 
-// 이벤트 리스너 등록
-document.querySelectorAll('.tab-btn, .nav-link').forEach(btn => {
-    const tabId = btn.getAttribute('data-tab');
-    if (tabId) {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            switchTab(tabId);
-        });
+// 이벤트 리스너 통합 등록
+document.addEventListener('click', (e) => {
+    const target = e.target.closest('[data-tab]');
+    if (target) {
+        e.preventDefault();
+        const tabId = target.getAttribute('data-tab');
+        switchTab(tabId);
     }
 });
 
-// 초기 탭 설정
-switchTab('lotto');
+// 초기 상태 설정
+switchTab('home');
 
-// 3. 로또 번호 생성
-generateBtn.addEventListener('click', () => {
+// --- 기존 도구 기능 (로또, AI, 메뉴) ---
+const numbersContainer = document.getElementById('numbers');
+const generateBtn = document.getElementById('generate-btn');
+const imageInput = document.getElementById('image-input');
+const previewImage = document.getElementById('preview-image');
+const loadingSpinner = document.getElementById('loading-spinner');
+const recommendMenuBtn = document.getElementById('recommend-menu-btn');
+const menuDisplay = document.getElementById('menu-display');
+const menuName = document.getElementById('menu-name');
+const menuCategory = document.getElementById('menu-category');
+const recipeContainer = document.getElementById('recipe-container');
+const recipeIngredients = document.getElementById('recipe-ingredients');
+const recipeSteps = document.getElementById('recipe-steps');
+
+// 로또
+generateBtn?.addEventListener('click', () => {
     numbersContainer.innerHTML = '';
     const numbers = new Set();
     while (numbers.size < 6) { numbers.add(Math.floor(Math.random() * 45) + 1); }
@@ -137,7 +145,7 @@ generateBtn.addEventListener('click', () => {
     });
 });
 
-// 4. AI 남녀상 테스트
+// AI 관상
 async function initModel() {
     if (!model) {
         const modelURL = URL + "model.json";
@@ -160,7 +168,7 @@ const handleFile = (file) => {
     reader.readAsDataURL(file);
 };
 
-imageInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+imageInput?.addEventListener('change', (e) => handleFile(e.target.files[0]));
 const uploadArea = document.getElementById('upload-area');
 if (uploadArea) {
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eName => {
@@ -184,7 +192,7 @@ async function predict(imgElement) {
     }
 }
 
-// 5. 메뉴 추천 로직
+// 메뉴 추천
 let menuQueue = [];
 const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=500&q=80";
 
@@ -197,22 +205,18 @@ function shuffleMenus() {
     }
 }
 
-recommendMenuBtn.addEventListener('click', () => {
+recommendMenuBtn?.addEventListener('click', () => {
     const menus = window.allMenus || [];
     if (menus.length === 0) return;
 
     menuDisplay.classList.add('loading');
     menuName.innerText = '최고의 메뉴 탐색 중...';
     recipeContainer.style.display = 'none';
-    
     const imgContainer = document.getElementById('menu-image-container');
     imgContainer.innerHTML = '<div class="spinner"></div>';
     
     setTimeout(() => {
-        if (menuQueue.length === 0) {
-            shuffleMenus();
-        }
-        
+        if (menuQueue.length === 0) shuffleMenus();
         const menuIdx = menuQueue.pop();
         const recipe = menus[menuIdx];
         const verifiedImgUrl = `https://images.unsplash.com/photo-${recipe.id}?auto=format&fit=crop&w=600&q=80`;
@@ -235,8 +239,6 @@ recommendMenuBtn.addEventListener('click', () => {
         const imgObj = new Image();
         imgObj.src = verifiedImgUrl;
         imgObj.onload = () => displayRecipe(verifiedImgUrl);
-        imgObj.onerror = () => {
-            displayRecipe(DEFAULT_IMAGE);
-        };
+        imgObj.onerror = () => displayRecipe(DEFAULT_IMAGE);
     }, 600);
 });

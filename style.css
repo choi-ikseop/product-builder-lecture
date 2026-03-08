@@ -278,9 +278,148 @@ footer {
 .menu-name { font-size: 1.5rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem; }
 .recipe-container { background: var(--card-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; border: 1px solid var(--border-color); }
 
-/* Inquiry Form */
-.inquiry-form input, .inquiry-form textarea {
-    background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color);
+/* Inquiry Form Modern Redesign */
+.inquiry-section {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.inquiry-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+
+.inquiry-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent-color), #00d2ff);
+}
+
+.inquiry-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.inquiry-header h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.inquiry-header p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.form-floating-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-floating-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--text-secondary);
+    padding-left: 0.2rem;
+}
+
+.form-floating-group input, 
+.form-floating-group textarea {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border-radius: 14px;
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+
+.form-floating-group input:focus, 
+.form-floating-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+    background: var(--card-bg);
+}
+
+.inquiry-card .submit-btn {
+    margin-top: 1rem;
+    padding: 1.2rem;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--accent-color), #0056b3);
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+}
+
+/* Home Section Style */
+.home-section {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.feature-card {
+    background: var(--card-bg);
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-color);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+}
+
+.feature-card .icon { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
+.feature-card h3 { margin-bottom: 1rem; font-size: 1.25rem; }
+.feature-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+
+/* Navigation Role Separation */
+header nav a {
+    position: relative;
+    padding: 0.5rem 0.2rem;
+}
+
+header nav a.active::after {
+    content: "";
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent-color);
+    border-radius: 2px;
+}
+
+.sidebar-menu {
+    border-left: 4px solid transparent;
+}
+
+/* Tool layout tweak when sidebar is present */
+.tool-layout {
+    display: contents; /* Inherit from content-grid */
 }
 
 .hidden { display: none !important; }
