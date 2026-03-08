@@ -118,14 +118,31 @@ function switchTab(tabId) {
     resetDisqus(tabId);
 }
 
+// 현재 활성 탭 추적 변수
+let activeTabId = 'home';
+
 // 이벤트 리스너 통합 등록
 document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-tab]');
     if (target) {
         e.preventDefault();
-        const tabId = target.getAttribute('data-tab');
-        switchTab(tabId);
+        activeTabId = target.getAttribute('data-tab');
+        switchTab(activeTabId);
     }
+});
+
+// 댓글 새로고침 버튼 이벤트
+document.getElementById('refresh-comments')?.addEventListener('click', () => {
+    const btn = document.getElementById('refresh-comments');
+    btn.innerText = '🔄 동기화 중...';
+    btn.disabled = true;
+    
+    resetDisqus(activeTabId);
+    
+    setTimeout(() => {
+        btn.innerText = '🔄 댓글 새로고침';
+        btn.disabled = false;
+    }, 1000);
 });
 
 // 초기 상태 설정

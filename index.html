@@ -183,7 +183,10 @@
 
     <!-- Community Section -->
     <div id="discussion-area" style="background: var(--card-bg); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
-        <h2 id="discussion-title" style="margin-bottom: 1.5rem; color: var(--accent-color); font-size: 1.5rem; font-weight: 800;">💬 데일리 커뮤니티</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2 id="discussion-title" style="margin: 0; color: var(--accent-color); font-size: 1.5rem; font-weight: 800;">💬 데일리 커뮤니티</h2>
+            <button id="refresh-comments" class="main-btn" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 8px;">🔄 댓글 새로고침</button>
+        </div>
         <p style="color: var(--text-secondary); margin-bottom: 2rem;">여러분의 생각과 행운의 소식을 나누어주세요.</p>
         <div id="disqus_thread"></div>
     </div>
