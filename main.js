@@ -1,5 +1,5 @@
 const URL = "https://teachablemachine.withgoogle.com/models/1LWpie6dk/";
-let model, labelContainer, maxPredictions;
+let model, labelContainer;
 
 // DOM 요소
 const themeToggle = document.getElementById('theme-toggle');
@@ -32,9 +32,7 @@ themeToggle.addEventListener('click', () => {
 function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'home' ? baseUrl : baseUrl + "#!" + tabId;
-    
-    // 식별자 버전을 올려서 댓글 꼬임 방지
-    const identifier = "daily-tools-v4-" + tabId;
+    const identifier = "daily-tools-v5-" + tabId;
     
     const tabNameMap = {
         'home': '홈 페이지',
@@ -169,38 +167,20 @@ generateBtn?.addEventListener('click', () => {
     });
 });
 
-// AI 동물상 (강력한 캐시 무력화 버전)
+// AI 동물상
 async function initModel() {
-    const cacheBuster = "?v=" + Date.now();
-    
-    // 1. 먼저 metadata.json을 fetch로 직접 가져와서 실제 클래스 구성을 확인
-    try {
-        const metaResp = await fetch(URL + "metadata.json" + cacheBuster, { cache: 'no-store' });
-        const metaData = await metaResp.json();
-        const currentLabels = metaData.labels;
-        console.log("서버의 최신 라벨 목록:", currentLabels);
-
-        // 2. 현재 로드된 모델이 없거나 라벨 구성이 다르면 새로 로드
-        if (!model || model.getClassLabels().length !== currentLabels.length) {
-            console.log("모델 불일치 감지. 최신 모델을 강제로 다시 로드합니다.");
-            
-            // 기존 모델 명시적 해제 시도 (메모리 관리)
-            model = null; 
-            
-            const modelURL = URL + "model.json" + cacheBuster;
-            const metadataURL = URL + "metadata.json" + cacheBuster;
-            
+    // 티치블 머신 URL에서 모델 정보를 강제로 갱신하기 위해 매번 새로고침 여부 확인
+    if (!model || model.getClassLabels().length < 3) {
+        console.log("최신 모델 로드 시도...");
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+        
+        try {
+            // 라이브러리 충돌 방지를 위해 쿼리스트링 제거 후 로드
             model = await tmImage.load(modelURL, metadataURL);
-            maxPredictions = model.getTotalClasses();
-            
-            console.log("모델 로드 성공! 최종 라벨:", model.getClassLabels());
-        }
-    } catch (e) {
-        console.error("모델 초기화 중 치명적 오류:", e);
-        // Fallback: 기본 로드 시도
-        if (!model) {
-            model = await tmImage.load(URL + "model.json", URL + "metadata.json");
-            maxPredictions = model.getTotalClasses();
+            console.log("모델 로드 성공! 현재 라벨:", model.getClassLabels());
+        } catch (e) {
+            console.error("모델 로드 실패:", e);
         }
     }
 }
@@ -213,7 +193,6 @@ const handleFile = (file) => {
         previewImage.style.display = 'block';
         loadingSpinner.style.display = 'block';
         
-        // 결과창 초기화 (이전 결과 삭제)
         const lblContainer = document.getElementById("label-container");
         if (lblContainer) lblContainer.innerHTML = '';
         
@@ -233,8 +212,9 @@ if (uploadArea) {
 }
 
 async function predict(imgElement) {
-    await initModel(); // 여기서 최신 모델임을 보장함
-    
+    await initModel();
+    if (!model) return;
+
     const prediction = await model.predict(imgElement);
     
     // 확률 높은 순 정렬
@@ -243,10 +223,10 @@ async function predict(imgElement) {
     const lblContainer = document.getElementById("label-container");
     lblContainer.innerHTML = '';
     
-    // 예측 결과의 실제 길이를 사용 (maxPredictions에 의존하지 않음)
-    for (let i = 0; i < prediction.length; i++) {
-        const className = prediction[i].className;
-        const prob = (prediction[i].probability * 100).toFixed(0);
+    // 결과 전량 출력 (개수 제한 없음)
+    prediction.forEach(p => {
+        const className = p.className;
+        const prob = (p.probability * 100).toFixed(0);
         const wrapper = document.createElement("div");
         wrapper.className = "label-wrapper";
         wrapper.innerHTML = `
@@ -259,7 +239,7 @@ async function predict(imgElement) {
             </div>
         `;
         lblContainer.appendChild(wrapper);
-    }
+    });
 }
 
 // 메뉴 추천
