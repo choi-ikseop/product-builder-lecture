@@ -3,7 +3,7 @@ let model, labelContainer, maxPredictions;
 
 // DOM 요소
 const themeToggle = document.getElementById('theme-toggle');
-const tabBtns = document.querySelectorAll('.tab-btn');
+const tabBtns = document.querySelectorAll('.tab-btn, .nav-link[data-tab]'); // Header links too
 const tabContents = document.querySelectorAll('.tab-content');
 const numbersContainer = document.getElementById('numbers');
 const generateBtn = document.getElementById('generate-btn');
@@ -50,7 +50,7 @@ themeToggle.addEventListener('click', () => {
 function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'lotto' ? baseUrl : baseUrl + "#!" + tabId;
-    let identifier = tabId === 'lotto' ? undefined : "general-recipe-tab-" + tabId;
+    let identifier = "daily-tools-" + tabId; // Unique per tab
 
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({
@@ -58,14 +58,12 @@ function resetDisqus(tabId) {
             config: function () {
                 this.page.identifier = identifier;
                 this.page.url = pageUrl;
-                this.page.title = document.querySelector(`[data-tab="${tabId}"]`).innerText;
             }
         });
     } else {
         window.disqus_config = function () {
             this.page.url = pageUrl;
             this.page.identifier = identifier;
-            this.page.title = document.querySelector(`[data-tab="${tabId}"]`).innerText;
         };
         (function() {
             var d = document, s = d.createElement('script');
@@ -74,38 +72,51 @@ function resetDisqus(tabId) {
             (d.head || d.body).appendChild(s);
         })();
     }
-    document.querySelectorAll('.dsq-count-link').forEach(link => {
-        const id = link.id.split('-')[0];
-        const linkUrl = id === 'lotto' ? baseUrl : baseUrl + "#!" + id;
-        link.setAttribute('href', linkUrl + '#disqus_thread');
-        link.setAttribute('data-disqus-url', linkUrl);
-    });
 }
 
-resetDisqus('lotto');
-
-// 탭 전환
-tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const tabId = btn.getAttribute('data-tab');
-        tabBtns.forEach(b => b.classList.remove('active'));
-        tabContents.forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(`${tabId}-section`).classList.add('active');
-        resetDisqus(tabId);
-    });
-});
-
-// 댓글 수 클릭 시 스크롤
-document.addEventListener('click', (e) => {
-    if (e.target.closest('.dsq-count-link')) {
-        e.preventDefault();
-        const target = document.getElementById('comment-area');
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
+// 탭 전환 로직 개선
+function switchTab(tabId) {
+    // 버튼 상태 업데이트 (헤더/사이드바 모두)
+    document.querySelectorAll('.tab-btn, .nav-link').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
         }
+    });
+
+    // 콘텐츠 표시
+    tabContents.forEach(content => {
+        if (content.id === `${tabId}-section`) {
+            content.classList.add('active');
+            content.classList.remove('hidden');
+        } else {
+            content.classList.remove('active');
+            content.classList.add('hidden');
+        }
+    });
+
+    // 스크롤 조정 (모바일 배려)
+    if (window.innerWidth <= 768) {
+        window.scrollTo({ top: document.querySelector('.main-content').offsetTop - 80, behavior: 'smooth' });
+    }
+
+    resetDisqus(tabId);
+}
+
+// 이벤트 리스너 등록
+document.querySelectorAll('.tab-btn, .nav-link').forEach(btn => {
+    const tabId = btn.getAttribute('data-tab');
+    if (tabId) {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchTab(tabId);
+        });
     }
 });
+
+// 초기 탭 설정
+switchTab('lotto');
 
 // 3. 로또 번호 생성
 generateBtn.addEventListener('click', () => {
@@ -151,10 +162,12 @@ const handleFile = (file) => {
 
 imageInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
 const uploadArea = document.getElementById('upload-area');
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eName => {
-    uploadArea.addEventListener(eName, (e) => { e.preventDefault(); e.stopPropagation(); }, false);
-});
-uploadArea.addEventListener('drop', (e) => handleFile(e.dataTransfer.files[0]), false);
+if (uploadArea) {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eName => {
+        uploadArea.addEventListener(eName, (e) => { e.preventDefault(); e.stopPropagation(); }, false);
+    });
+    uploadArea.addEventListener('drop', (e) => handleFile(e.dataTransfer.files[0]), false);
+}
 
 async function predict(imgElement) {
     await initModel();
@@ -171,9 +184,9 @@ async function predict(imgElement) {
     }
 }
 
-// 5. 전체 메뉴 및 레시피 추천 (셔플 기반 큐 및 이미지 검증 로직 강화)
+// 5. 메뉴 추천 로직
 let menuQueue = [];
-const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=500&q=80"; // 음식 기본 이미지
+const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=500&q=80";
 
 function shuffleMenus() {
     const menus = window.allMenus || [];
@@ -192,7 +205,6 @@ recommendMenuBtn.addEventListener('click', () => {
     menuName.innerText = '최고의 메뉴 탐색 중...';
     recipeContainer.style.display = 'none';
     
-    // 이미지 컨테이너 초기화 및 스피너 추가
     const imgContainer = document.getElementById('menu-image-container');
     imgContainer.innerHTML = '<div class="spinner"></div>';
     
@@ -203,8 +215,6 @@ recommendMenuBtn.addEventListener('click', () => {
         
         const menuIdx = menuQueue.pop();
         const recipe = menus[menuIdx];
-
-        // 100% 매칭을 위한 고유 ID 기반 이미지 URL 생성
         const verifiedImgUrl = `https://images.unsplash.com/photo-${recipe.id}?auto=format&fit=crop&w=600&q=80`;
 
         const displayRecipe = (src) => {
@@ -226,7 +236,6 @@ recommendMenuBtn.addEventListener('click', () => {
         imgObj.src = verifiedImgUrl;
         imgObj.onload = () => displayRecipe(verifiedImgUrl);
         imgObj.onerror = () => {
-            console.warn(`이미지 매칭 오류 발생: ${recipe.name}. 안전한 폴백 이미지를 사용합니다.`);
             displayRecipe(DEFAULT_IMAGE);
         };
     }, 600);
