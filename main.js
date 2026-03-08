@@ -32,7 +32,24 @@ themeToggle.addEventListener('click', () => {
 function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'home' ? baseUrl : baseUrl + "#!" + tabId;
-    let identifier = "daily-tools-" + tabId;
+    
+    // 식별자를 더 명확하게 구분 (기존 댓글과 충돌 방지)
+    const identifier = "daily-tools-v2-" + tabId;
+    
+    const tabNameMap = {
+        'home': '홈 페이지',
+        'lotto': '로또 번호 생성기',
+        'gender': 'AI 관상 테스트',
+        'dinner': '저녁 메뉴 추천',
+        'inquiry': '제휴 및 개선 문의'
+    };
+    const currentTitle = tabNameMap[tabId] || 'Daily Tools';
+
+    // 게시판 제목 업데이트
+    const discussionTitle = document.getElementById('discussion-title');
+    if (discussionTitle) {
+        discussionTitle.innerText = `💬 ${currentTitle} 토론장`;
+    }
 
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({
@@ -40,12 +57,14 @@ function resetDisqus(tabId) {
             config: function () {
                 this.page.identifier = identifier;
                 this.page.url = pageUrl;
+                this.page.title = currentTitle;
             }
         });
     } else {
         window.disqus_config = function () {
             this.page.url = pageUrl;
             this.page.identifier = identifier;
+            this.page.title = currentTitle;
         };
         (function() {
             var d = document, s = d.createElement('script');
