@@ -34,12 +34,12 @@ function resetDisqus(tabId) {
     const pageUrl = tabId === 'home' ? baseUrl : baseUrl + "#!" + tabId;
     
     // 식별자를 더 명확하게 구분 (기존 댓글과 충돌 방지)
-    const identifier = "daily-tools-v2-" + tabId;
+    const identifier = "daily-tools-v3-" + tabId;
     
     const tabNameMap = {
         'home': '홈 페이지',
         'lotto': '로또 번호 생성기',
-        'gender': 'AI 관상 테스트',
+        'gender': 'AI 동물상 테스트',
         'dinner': '저녁 메뉴 추천',
         'inquiry': '제휴 및 개선 문의'
     };
@@ -181,16 +181,22 @@ generateBtn?.addEventListener('click', () => {
     });
 });
 
-// AI 관상
+// AI 동물상
 async function initModel() {
-    if (!model) {
-        // 캐시 방지를 위해 URL 뒤에 타임스탬프 추가 (Cache Busting)
+    // 캐시 방지를 위해 매번 최신 모델 정보를 체크
+    if (!model || model.getClassLabels().length < 3) {
+        console.log("최신 AI 모델을 서버에서 새로 불러옵니다...");
         const cacheBuster = "?v=" + Date.now();
         const modelURL = URL + "model.json" + cacheBuster;
         const metadataURL = URL + "metadata.json" + cacheBuster;
         
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
+        try {
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+            console.log("모델 로드 성공! 인식 가능 항목:", model.getClassLabels());
+        } catch (e) {
+            console.error("모델 로드 실패:", e);
+        }
     }
 }
 
@@ -219,6 +225,10 @@ if (uploadArea) {
 async function predict(imgElement) {
     await initModel();
     const prediction = await model.predict(imgElement);
+    
+    // 결과 정렬 (높은 확률 순)
+    prediction.sort((a, b) => b.probability - a.probability);
+    
     labelContainer = document.getElementById("label-container");
     labelContainer.innerHTML = '';
     for (let i = 0; i < maxPredictions; i++) {
