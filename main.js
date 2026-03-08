@@ -29,9 +29,10 @@ themeToggle.addEventListener('click', () => {
 function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'home' ? baseUrl : baseUrl + "#!" + tabId;
-    const identifier = "daily-tools-v10-" + tabId;
+    const identifier = "omnikit-v1-" + tabId;
+    
     const discussionTitle = document.getElementById('discussion-title');
-    if (discussionTitle) discussionTitle.innerText = `💬 ${tabId.toUpperCase()} 게시판`;
+    if (discussionTitle) discussionTitle.innerText = `💬 ${tabId.toUpperCase()} Community`;
 
     if (typeof DISQUS !== 'undefined') {
         DISQUS.reset({ reload: true, config: function () { this.page.identifier = identifier; this.page.url = pageUrl; } });
@@ -87,7 +88,7 @@ document.getElementById('generate-btn')?.addEventListener('click', () => {
     });
 });
 
-// --- AI Gender (updated) ---
+// --- AI Gender ---
 async function initModel() {
     if (!model) model = await tmImage.load(URL + "model.json", URL + "metadata.json");
 }
@@ -132,12 +133,12 @@ let breathing = false;
 document.getElementById('breath-btn')?.addEventListener('click', (e) => {
     breathing = !breathing;
     const txt = document.getElementById('breath-text');
-    e.target.innerText = breathing ? "가이드 중단" : "가이드 시작";
+    e.target.innerText = breathing ? "가이드 중단" : "명상 가이드 시작";
     if (breathing) {
         let step = 0;
         const cycle = () => {
             if (!breathing) return;
-            const msgs = ["숨 들이마시기", "멈추기", "숨 내뱉기"];
+            const msgs = ["들이마시기", "멈추기", "내뱉기"];
             txt.innerText = msgs[step % 3];
             step++;
             setTimeout(cycle, 4000);
@@ -149,51 +150,52 @@ document.getElementById('breath-btn')?.addEventListener('click', (e) => {
 // --- Pomodoro ---
 let pomoInt;
 document.getElementById('pomo-start')?.addEventListener('click', (e) => {
-    if (e.target.innerText === "시작") {
+    if (e.target.innerText === "집중 시작") {
         e.target.innerText = "일시정지";
         let time = 25 * 60;
         pomoInt = setInterval(() => {
             time--;
             const m = Math.floor(time/60), s = time%60;
             document.getElementById('pomo-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if (time <= 0) clearInterval(pomoInt);
+            if (time <= 0) { clearInterval(pomoInt); alert("집중 시간이 끝났습니다! 휴식을 취하세요."); }
         }, 1000);
     } else {
-        e.target.innerText = "시작";
+        e.target.innerText = "집중 시작";
         clearInterval(pomoInt);
     }
 });
 document.getElementById('pomo-reset')?.addEventListener('click', () => {
     clearInterval(pomoInt);
     document.getElementById('pomo-display').innerText = "25:00";
-    document.getElementById('pomo-start').innerText = "시작";
+    document.getElementById('pomo-start').innerText = "집중 시작";
 });
 
 // --- Quote ---
 const quotes = [
     {t: "가장 큰 위험은 위험을 감수하지 않는 것이다.", a: "마크 저커버그"},
-    {t: "어제보다 나은 오늘을 만드는 것은 당신의 몫이다.", a: "알 수 없음"},
     {t: "성공은 최종적인 것이 아니며, 실패는 치명적인 것이 아니다.", a: "윈스턴 처칠"},
     {t: "시작하는 방법은 말을 그만두고 행동하는 것이다.", a: "월트 디즈니"}
 ];
-document.getElementById('new-quote-btn')?.addEventListener('click', () => {
+const updateQuote = () => {
     const q = quotes[Math.floor(Math.random()*quotes.length)];
     document.getElementById('quote-text').innerText = `"${q.t}"`;
     document.getElementById('quote-author').innerText = `- ${q.a}`;
-});
+};
+updateQuote();
+document.getElementById('new-quote-btn')?.addEventListener('click', updateQuote);
 
 // --- Unit ---
 document.getElementById('unit-input')?.addEventListener('input', (e) => {
     const val = parseFloat(e.target.value);
     const mode = document.getElementById('unit-mode').value;
     const res = document.getElementById('unit-result');
-    if (isNaN(val)) { res.innerText = "값을 입력하세요."; return; }
+    if (isNaN(val)) { res.innerText = "수치를 입력하세요."; return; }
     let out = "";
     if (mode === 'py') out = `${(val * 3.3057).toFixed(2)} ㎡`;
     else if (mode === 'm2') out = `${(val / 3.3057).toFixed(2)} 평`;
     else if (mode === 'in') out = `${(val * 2.54).toFixed(2)} ㎝`;
     else if (mode === 'cm') out = `${(val / 2.54).toFixed(2)} 인치`;
-    res.innerText = `결과: ${out}`;
+    res.innerText = `Result: ${out}`;
 });
 
 // --- Password ---
@@ -210,13 +212,44 @@ document.getElementById('flip-coin-btn')?.addEventListener('click', () => {
     const obj = document.getElementById('coin-obj');
     const res = document.getElementById('coin-result');
     obj.classList.add('flip');
-    res.innerText = "던지는 중...";
+    res.innerText = "Deciding...";
     setTimeout(() => {
         obj.classList.remove('flip');
-        const side = Math.random() > 0.5 ? "앞면" : "뒷면";
-        obj.innerText = side === "앞면" ? "🌕" : "🌑";
-        res.innerText = `결과는 [${side}] 입니다!`;
+        const side = Math.random() > 0.5 ? "Heads" : "Tails";
+        obj.innerText = side === "Heads" ? "🌕" : "🌑";
+        res.innerText = `Result: [${side}]`;
     }, 600);
+});
+
+// --- Menu Recommend ---
+const recommendMenuBtn = document.getElementById('recommend-menu-btn');
+const menuName = document.getElementById('menu-name');
+const menuCategory = document.getElementById('menu-category');
+const recipeContainer = document.getElementById('recipe-container');
+const recipeIngredients = document.getElementById('recipe-ingredients');
+const recipeSteps = document.getElementById('recipe-steps');
+const menuImgContainer = document.getElementById('menu-image-container');
+
+recommendMenuBtn?.addEventListener('click', () => {
+    const menus = window.allMenus || [];
+    if (menus.length === 0) return;
+    
+    menuImgContainer.innerHTML = '⌛';
+    const recipe = menus[Math.floor(Math.random() * menus.length)];
+    
+    setTimeout(() => {
+        menuImgContainer.innerHTML = `<img src="https://images.unsplash.com/photo-${recipe.id}?auto=format&fit=crop&w=600&q=80" style="width:100%; height:100%; object-fit:cover;">`;
+        menuName.innerText = recipe.name;
+        menuCategory.innerText = recipe.category;
+        recipeIngredients.innerText = recipe.ingredients;
+        recipeSteps.innerHTML = '';
+        recipe.steps.forEach(step => {
+            const li = document.createElement('li');
+            li.innerText = step;
+            recipeSteps.appendChild(li);
+        });
+        recipeContainer.style.display = 'block';
+    }, 500);
 });
 
 switchTab('home');

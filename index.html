@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="로또 번호 생성, AI 남녀상 테스트, 오늘의 운세 등 일상을 풍요롭게 만드는 10가지 데일리 툴킷.">
-    <title>Daily Tools - 10가지 일상 도구함</title>
+    <meta name="description" content="OmniKit: 당신의 일상을 완성하는 10가지 프리미엄 유틸리티 킷.">
+    <title>OmniKit - 프리미엄 라이프스타일 툴킷</title>
+    
     <meta name="google-adsense-account" content="ca-pub-6966497106387748">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6966497106387748" crossorigin="anonymous"></script>
+    
     <link rel="stylesheet" href="style.css">
+    
     <script>
         (function() {
             const theme = localStorage.getItem('theme') || 'light';
@@ -17,6 +20,8 @@
             }
         })();
     </script>
+
+    <!-- TensorFlow & Teachable Machine -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
@@ -24,42 +29,43 @@
 
 <header>
     <div class="header-container">
-        <a href="#" class="logo" data-tab="home">🛠️ Daily Tools</a>
+        <a href="#" class="logo" data-tab="home">OmniKit</a>
         <nav>
             <ul>
-                <li><a href="#" class="nav-link" data-tab="home">홈</a></li>
-                <li><a href="#" class="nav-link" data-tab="lotto">도구함</a></li>
-                <li><a href="#" class="nav-link" data-tab="inquiry">제휴 문의</a></li>
+                <li><a data-tab="home">Home</a></li>
+                <li><a data-tab="lotto">Tools</a></li>
+                <li><a data-tab="inquiry">Support</a></li>
             </ul>
         </nav>
-        <button id="theme-toggle" class="theme-toggle">☀️</button>
+        <button id="theme-toggle" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">☀️</button>
     </div>
 </header>
 
 <main>
-    <!-- Home Section -->
+    <!-- Home Dashboard -->
     <div id="home-section" class="tab-content home-section">
-        <section class="intro-section">
-            <h1>당신의 일상을 더 스마트하게</h1>
-            <p>10가지 강력한 도구로 복잡한 고민은 줄이고 즐거움을 더하세요.</p>
+        <section class="home-hero">
+            <h1>Every Tool for<br>Your Every Day.</h1>
+            <p style="color:var(--text-muted); font-size:1.2rem;">불필요한 기능은 덜어내고, 본질에 집중했습니다.<br>당신의 하루를 더 가치 있게 만드는 10가지 도구를 만나보세요.</p>
         </section>
+
         <div class="feature-grid">
-            <div class="feature-card" data-tab="lotto"><span class="icon">🎱</span><h3>로또 번호</h3><p>행운의 6자리 번호 추출</p></div>
-            <div class="feature-card" data-tab="gender"><span class="icon">📸</span><h3>AI 남녀상</h3><p>인공지능 얼굴 스타일 분석</p></div>
-            <div class="feature-card" data-tab="dinner"><span class="icon">🍽️</span><h3>메뉴 추천</h3><p>오늘 뭐 먹을지 고민 해결</p></div>
-            <div class="feature-card" data-tab="fortune"><span class="icon">🔮</span><h3>오늘의 운세</h3><p>띠와 별자리로 보는 하루</p></div>
-            <div class="feature-card" data-tab="breath"><span class="icon">🌬️</span><h3>마음 호흡</h3><p>스트레스 해소 가이드</p></div>
-            <div class="feature-card" data-tab="pomo"><span class="icon">⏲️</span><h3>뽀모도로</h3><p>최고의 집중력 도구</p></div>
-            <div class="feature-card" data-tab="quote"><span class="icon">✍️</span><h3>명언 한마디</h3><p>매일 새로운 동기부여</p></div>
-            <div class="feature-card" data-tab="unit"><span class="icon">📏</span><h3>단위 변환</h3><p>평수, 환율 등 생활 변환</p></div>
-            <div class="feature-card" data-tab="pass"><span class="icon">🔐</span><h3>암호 생성</h3><p>강력한 보안 비밀번호</p></div>
-            <div class="feature-card" data-tab="coin"><span class="icon">🪙</span><h3>결정기</h3><p>동전/주사위 랜덤 선택</p></div>
+            <div class="feature-card" data-tab="lotto"><span class="icon">🎱</span><h3>로또 번호</h3><p>과학적 난수 추출 알고리즘</p></div>
+            <div class="feature-card" data-tab="gender"><span class="icon">📸</span><h3>AI 남녀상</h3><p>인공지능 정밀 얼굴 분석</p></div>
+            <div class="feature-card" data-tab="dinner"><span class="icon">🍽️</span><h3>메뉴 추천</h3><p>오늘의 큐레이션 푸드</p></div>
+            <div class="feature-card" data-tab="fortune"><span class="icon">🔮</span><h3>오늘의 운세</h3><p>운명의 별자리 & 띠별 가이드</p></div>
+            <div class="feature-card" data-tab="breath"><span class="icon">🌬️</span><h3>마음 호흡</h3><p>스트레스 케어 명상 가이드</p></div>
+            <div class="feature-card" data-tab="pomo"><span class="icon">⏲️</span><h3>뽀모도로</h3><p>집중력을 극대화하는 타이머</p></div>
+            <div class="feature-card" data-tab="quote"><span class="icon">✍️</span><h3>명언 한마디</h3><p>내일을 위한 영감의 기록</p></div>
+            <div class="feature-card" data-tab="unit"><span class="icon">📏</span><h3>단위 변환</h3><p>가장 빠른 실생활 변환기</p></div>
+            <div class="feature-card" data-tab="pass"><span class="icon">🔐</span><h3>암호 생성</h3><p>강력한 보안 비밀번호 엔진</p></div>
+            <div class="feature-card" data-tab="coin"><span class="icon">🪙</span><h3>랜덤 결정기</h3><p>후회 없는 즉각적인 의사결정</p></div>
         </div>
     </div>
 
     <!-- Tools Grid Layout -->
     <div id="tools-layout" class="content-grid hidden">
-        <aside class="sidebar-menu">
+        <aside class="sidebar-menu glass">
             <button class="tab-btn" data-tab="lotto">🎱 로또 번호</button>
             <button class="tab-btn" data-tab="gender">📸 AI 남녀상</button>
             <button class="tab-btn" data-tab="dinner">🍽️ 메뉴 추천</button>
@@ -69,30 +75,36 @@
             <button class="tab-btn" data-tab="quote">✍️ 명언 한마디</button>
             <button class="tab-btn" data-tab="unit">📏 단위 변환</button>
             <button class="tab-btn" data-tab="pass">🔐 암호 생성</button>
-            <button class="tab-btn" data-tab="coin">🪙 랜덤 결정기</button>
+            <button class="tab-btn" data-tab="coin">🪙 결정기</button>
         </aside>
 
         <div class="main-content">
             <!-- Lotto -->
             <div id="lotto-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>🎱 로또 번호 생성기</h2>
+                    <div class="tool-header">
+                        <h2>🎱 Lucky Lotto</h2>
+                        <p>행운의 번호를 추출합니다.</p>
+                    </div>
                     <div id="numbers" class="numbers-container"></div>
-                    <button id="generate-btn" class="main-btn">번호 생성하기</button>
+                    <button id="generate-btn" class="main-btn">행운의 번호 생성</button>
                 </div>
             </div>
 
-            <!-- Gender AI -->
+            <!-- AI Gender -->
             <div id="gender-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>📸 AI 남녀상 테스트</h2>
-                    <p id="model-debug-info" style="font-size: 0.8rem; color: var(--accent-color); margin-bottom: 1rem;"></p>
-                    <div class="upload-area" id="upload-area">
-                        <input type="file" id="image-input" accept="image/*" hidden>
-                        <label for="image-input" class="upload-label">📸 사진 업로드</label>
-                        <img id="preview-image" style="display: none; max-width: 100%; border-radius: 10px; margin-top: 10px;">
+                    <div class="tool-header">
+                        <h2>📸 AI Vision Analyzer</h2>
+                        <p>인공지능이 분석하는 나의 얼굴 스타일</p>
                     </div>
-                    <div id="loading-spinner" style="display: none;">AI 분석 중...</div>
+                    <p id="model-debug-info" style="font-size: 0.8rem; color: var(--accent); margin-bottom: 1rem;"></p>
+                    <div class="upload-area glass" id="upload-area">
+                        <input type="file" id="image-input" accept="image/*" hidden>
+                        <label for="image-input" class="main-btn" style="cursor:pointer; display:inline-block;">📸 사진 업로드</label>
+                        <img id="preview-image" style="display: none; max-width: 100%; border-radius: 20px; margin-top: 2rem;">
+                    </div>
+                    <div id="loading-spinner" style="display: none; margin: 2rem 0;">분석 엔진 가동 중...</div>
                     <div id="label-container"></div>
                 </div>
             </div>
@@ -100,141 +112,180 @@
             <!-- Dinner -->
             <div id="dinner-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>🍽️ 오늘 뭐 먹지?</h2>
-                    <div id="menu-display" class="menu-display">
-                        <div id="menu-image-container" class="menu-image-container">🍽️</div>
-                        <div id="menu-name" class="menu-name">메뉴를 골라보세요</div>
-                        <div id="menu-category" class="menu-category"></div>
-                        <div id="recipe-container" style="display: none;">
+                    <div class="tool-header">
+                        <h2>🍽️ Food Curation</h2>
+                        <p>당신의 취향을 고려한 최고의 메뉴</p>
+                    </div>
+                    <div id="menu-display">
+                        <div id="menu-image-container" class="menu-image-container" style="width:100%; height:300px; border-radius:20px; margin-bottom:2rem; background:#eee; display:flex; align-items:center; justify-content:center; font-size:4rem; overflow:hidden;">🍽️</div>
+                        <div id="menu-name" class="menu-name" style="font-size:2rem; font-weight:800; color:var(--accent);"></div>
+                        <div id="menu-category" class="menu-category" style="margin-bottom:2rem; font-weight:600; color:var(--text-muted);"></div>
+                        <div id="recipe-container" style="display: none; text-align:left; background:var(--bg-color); padding:2rem; border-radius:20px;">
+                            <h4 style="margin-top:0;">[ 주재료 ]</h4>
                             <p id="recipe-ingredients"></p>
-                            <ol id="recipe-steps"></ol>
+                            <h4>[ 레시피 ]</h4>
+                            <ol id="recipe-steps" style="padding-left:1.5rem;"></ol>
                         </div>
                     </div>
-                    <button id="recommend-menu-btn" class="main-btn">메뉴 추천받기</button>
+                    <button id="recommend-menu-btn" class="main-btn" style="margin-top:2rem;">오늘의 메뉴 추천</button>
                 </div>
             </div>
 
-            <!-- Fortune (New) -->
+            <!-- Fortune -->
             <div id="fortune-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>🔮 오늘의 행운 운세</h2>
-                    <div class="input-group">
-                        <select id="fortune-type"><option value="zodiac">12띠별 운세</option><option value="star">별자리 운세</option></select>
-                        <select id="fortune-val"></select>
+                    <div class="tool-header">
+                        <h2>🔮 Cosmic Fortune</h2>
+                        <p>우주의 기운을 담은 오늘의 조언</p>
                     </div>
-                    <button id="get-fortune-btn" class="main-btn">운세 보기</button>
-                    <div id="fortune-result" class="result-box hidden"></div>
+                    <div class="input-group" style="margin-bottom:2rem;">
+                        <select id="fortune-type" class="input-modern"><option value="zodiac">12띠</option><option value="star">별자리</option></select>
+                        <select id="fortune-val" class="input-modern"></select>
+                    </div>
+                    <button id="get-fortune-btn" class="main-btn">나의 운세 확인</button>
+                    <div id="fortune-result" class="result-box hidden glass"></div>
                 </div>
             </div>
 
-            <!-- Breath (New) -->
+            <!-- Breath -->
             <div id="breath-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>🌬️ 마음 챙김 호흡 가이드</h2>
-                    <p>원을 보며 함께 숨을 들이마시고 내뱉으세요.</p>
-                    <div class="breathing-circle"><span id="breath-text" class="breathing-text">준비</span></div>
-                    <button id="breath-btn" class="main-btn">가이드 시작</button>
+                    <div class="tool-header">
+                        <h2>🌬️ Mindful Breathing</h2>
+                        <p>숨을 고르며 마음의 안정을 찾으세요.</p>
+                    </div>
+                    <div class="breath-circle-wrap"><div class="breath-circle"></div><span id="breath-text" class="timer-display" style="font-size:1.5rem; position:absolute; z-index:10;">준비</span></div>
+                    <button id="breath-btn" class="main-btn">명상 가이드 시작</button>
                 </div>
             </div>
 
-            <!-- Pomo (New) -->
+            <!-- Pomo -->
             <div id="pomo-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>⏲️ 뽀모도로 집중 타이머</h2>
-                    <div id="pomo-display" class="timer-display">25:00</div>
-                    <div class="input-group">
-                        <button id="pomo-start" class="main-btn">시작</button>
+                    <div class="tool-header">
+                        <h2>⏲️ Focus Timer</h2>
+                        <p>집중과 휴식의 완벽한 밸런스</p>
+                    </div>
+                    <div class="pomo-timer-box"><div id="pomo-display" class="timer-display">25:00</div></div>
+                    <div style="display:flex; gap:1rem; justify-content:center;">
+                        <button id="pomo-start" class="main-btn">집중 시작</button>
                         <button id="pomo-reset" class="main-btn" style="background:#666;">초기화</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Quote (New) -->
+            <!-- Quote -->
             <div id="quote-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>✍️ 오늘의 영감 한마디</h2>
-                    <div class="quote-box">
-                        <span id="quote-text" class="quote-text">"당신의 인생은 당신이 생각하는 대로 된다."</span>
-                        <span id="quote-author" class="quote-author">- 마르쿠스 아우렐리우스</span>
+                    <div class="tool-header">
+                        <h2>✍️ Daily Inspiration</h2>
+                        <p>매일 한 문장, 삶을 바꾸는 힘</p>
                     </div>
-                    <button id="new-quote-btn" class="main-btn">다른 명언 보기</button>
+                    <div class="quote-box glass">
+                        <span id="quote-text" class="quote-text"></span>
+                        <span id="quote-author" class="quote-author"></span>
+                    </div>
+                    <button id="new-quote-btn" class="main-btn">새로운 영감 받기</button>
                 </div>
             </div>
 
-            <!-- Unit (New) -->
+            <!-- Unit -->
             <div id="unit-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>📏 만능 단위 변환기</h2>
+                    <div class="tool-header">
+                        <h2>📏 Smart Converter</h2>
+                        <p>가장 직관적인 단위 변환</p>
+                    </div>
                     <div class="input-group">
-                        <input type="number" id="unit-input" placeholder="값 입력">
-                        <select id="unit-mode">
+                        <input type="number" id="unit-input" class="input-modern" placeholder="수치를 입력하세요">
+                        <select id="unit-mode" class="input-modern">
                             <option value="py">평 → ㎡</option>
                             <option value="m2">㎡ → 평</option>
                             <option value="in">인치 → ㎝</option>
                             <option value="cm">㎝ → 인치</option>
                         </select>
                     </div>
-                    <div id="unit-result" class="result-box">결과가 여기에 표시됩니다.</div>
+                    <div id="unit-result" class="result-box glass">값을 입력하면 즉시 변환됩니다.</div>
                 </div>
             </div>
 
-            <!-- Pass (New) -->
+            <!-- Pass -->
             <div id="pass-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>🔐 강력한 암호 생성기</h2>
-                    <div class="input-group">
-                        <label>길이: <input type="number" id="pass-len" value="12" min="4" max="30"></label>
+                    <div class="tool-header">
+                        <h2>🔐 Vault Key Gen</h2>
+                        <p>해킹 불가능한 무작위 암호 생성</p>
                     </div>
-                    <div id="pass-result" class="result-box" style="word-break:break-all;">********</div>
-                    <button id="gen-pass-btn" class="main-btn">암호 생성</button>
+                    <div style="margin-bottom:2rem;">
+                        <label style="font-weight:700;">암호 길이: </label>
+                        <input type="number" id="pass-len" class="input-modern" style="width:100px; display:inline-block;" value="16" min="4" max="64">
+                    </div>
+                    <div id="pass-result" class="result-box glass" style="font-family:monospace; word-break:break-all; font-size:1.5rem;">********</div>
+                    <button id="gen-pass-btn" class="main-btn" style="margin-top:2rem;">보안 암호 생성</button>
                 </div>
             </div>
 
-            <!-- Coin (New) -->
+            <!-- Coin -->
             <div id="coin-section" class="tab-content hidden">
                 <div class="tool-container">
-                    <h2>🪙 랜덤 결정기</h2>
-                    <div id="coin-obj" class="coin">?</div>
-                    <p id="coin-result" style="font-weight:800; font-size:1.5rem;"></p>
+                    <div class="tool-header">
+                        <h2>🪙 Instant Decision</h2>
+                        <p>복잡한 고민을 한 번에 해결</p>
+                    </div>
+                    <div id="coin-obj" class="coin glass">?</div>
+                    <p id="coin-result" style="font-weight:900; font-size:2rem; margin:2rem 0; color:var(--accent);"></p>
                     <button id="flip-coin-btn" class="main-btn">동전 던지기</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Inquiry -->
+    <!-- Inquiry Support -->
     <div id="inquiry-section" class="tab-content inquiry-section hidden">
         <div class="inquiry-card">
-            <div class="inquiry-header"><h2>제휴 및 개선 문의</h2><p>서비스 발전을 위한 소중한 의견을 기다립니다.</p></div>
+            <div class="inquiry-header">
+                <h2>OmniKit Support</h2>
+                <p>궁금한 점이나 개선 제안을 보내주세요.</p>
+            </div>
             <form action="https://formspree.io/f/xreygbbb" method="POST">
-                <div class="form-floating-group"><label>성함</label><input type="text" name="name" required></div>
-                <div class="form-floating-group"><label>이메일</label><input type="email" name="_replyto" required></div>
-                <div class="form-floating-group"><label>내용</label><textarea name="message" required></textarea></div>
-                <button type="submit" class="main-btn">문의 보내기</button>
+                <div class="form-floating-group"><label>Name</label><input type="text" name="name" class="input-modern" required></div>
+                <div class="form-floating-group"><label>Email</label><input type="email" name="_replyto" class="input-modern" required></div>
+                <div class="form-floating-group"><label>Message</label><textarea name="message" class="input-modern" style="height:150px;" required></textarea></div>
+                <button type="submit" class="main-btn" style="width:100%;">메시지 전송</button>
             </form>
         </div>
     </div>
 
-    <hr class="divider">
-    <div id="discussion-area" style="background: var(--card-bg); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 2rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h2 id="discussion-title" style="margin: 0; color: var(--accent-color); font-size: 1.5rem; font-weight: 800;">💬 데일리 커뮤니티</h2>
-            <button id="refresh-comments" class="main-btn" style="width: auto; padding: 0.5rem 1rem; font-size: 0.8rem; border-radius: 8px;">🔄 새로고침</button>
+    <!-- Professional Community Area -->
+    <section class="community-section">
+        <div class="community-header">
+            <h2 id="discussion-title">💬 OmniKit Community</h2>
+            <button id="refresh-comments" class="main-btn" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">🔄 새로고침</button>
         </div>
-        <div id="disqus_thread"></div>
-    </div>
+        <div id="disqus_thread" class="glass" style="padding:2rem; border-radius:20px;"></div>
+    </section>
 </main>
 
 <footer>
     <div class="footer-content">
-        <div class="footer-section"><h4>Daily Tools</h4><p>당신의 하루를 돕는 10가지 도구</p></div>
-        <div class="footer-section"><h4>바로가기</h4><a data-tab="home">홈</a><a data-tab="lotto">도구함</a><a href="privacy.html">개인정보</a></div>
+        <div class="footer-section">
+            <h4 class="logo">OmniKit</h4>
+            <p>Better tools for better life.</p>
+        </div>
+        <div class="footer-section">
+            <h4 style="color:white;">Quick Links</h4>
+            <a data-tab="home">Home</a>
+            <a data-tab="lotto">Tools</a>
+            <a href="privacy.html">Privacy Policy</a>
+        </div>
     </div>
-    <div style="text-align: center; margin-top: 2rem; color: #666; font-size: 0.8rem;">&copy; 2026 Daily Tools. All rights reserved.</div>
+    <div style="text-align: center; margin-top: 4rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 2rem;">
+        &copy; 2026 OmniKit. Designed for Excellence.
+    </div>
 </footer>
 
 <script src="menuData.js"></script>
-<script src="main.js?v=2.0.0"></script>
+<script src="main.js?v=2.1.0"></script>
 <script id="dsq-count-scr" src="//productbuilder-j0ykvmteku.disqus.com/count.js" async></script>
 </body>
 </html>
