@@ -3,23 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="옴니킷(OmniKit): 당신의 일상을 완성하는 10가지 프리미엄 도구 모음.">
-    <title>OmniKit - 프리미엄 라이프스타일 도구함</title>
-    
+    <meta name="description" content="OmniKit: 당신의 일상을 완성하는 10가지 프리미엄 도구 모음.">
+    <title>OmniKit - 일상 도구함</title>
     <meta name="google-adsense-account" content="ca-pub-6966497106387748">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6966497106387748" crossorigin="anonymous"></script>
-    
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
-    
     <script>
         (function() {
             const theme = localStorage.getItem('theme') || 'light';
             if (theme === 'dark') document.documentElement.classList.add('dark-mode');
         })();
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
@@ -30,38 +24,37 @@
         <a href="#" class="logo" data-tab="home">OmniKit</a>
         <nav>
             <ul>
-                <li><a data-tab="home" class="nav-link">대시보드</a></li>
+                <li><a data-tab="home" class="nav-link">홈</a></li>
                 <li><a data-tab="lotto" class="nav-link">도구함</a></li>
-                <li><a data-tab="inquiry" class="nav-link">제휴 문의</a></li>
+                <li><a data-tab="inquiry" class="nav-link">문의하기</a></li>
             </ul>
         </nav>
-        <button id="theme-toggle" style="background:none; border:none; cursor:pointer; font-size:1.4rem;">☀️</button>
+        <button id="theme-toggle" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">☀️</button>
     </div>
 </header>
 
 <main>
-    <!-- 대시보드 섹션 -->
+    <!-- 홈 대시보드 -->
     <div id="home-section" class="tab-content">
-        <section class="home-hero">
-            <h1>당신의 하루를 완성하세요.</h1>
-            <p>전문적으로 설계된 10가지 프리미엄 도구로 일상의 효율을 높여보세요.</p>
+        <section class="workspace-header">
+            <h2>당신의 하루를 스마트하게</h2>
+            <p>10가지 필수 도구로 일상의 효율을 높여보세요.</p>
         </section>
-
         <div class="bento-grid">
-            <div class="bento-item" data-tab="lotto"><span class="icon">🎱</span><h3>로또 번호</h3><p>과학적 난수 알고리즘 기반 번호 추출기</p></div>
-            <div class="bento-item" data-tab="gender"><span class="icon">📸</span><h3>AI 남녀상</h3><p>인공지능 정밀 시각 분석 엔진</p></div>
-            <div class="bento-item" data-tab="dinner"><span class="icon">🍽️</span><h3>메뉴 추천</h3><p>취향을 고려한 맞춤형 식단 큐레이션</p></div>
-            <div class="bento-item" data-tab="fortune"><span class="icon">🔮</span><h3>오늘의 운세</h3><p>천체 데이터 기반 오늘의 운세 가이드</p></div>
-            <div class="bento-item" data-tab="breath"><span class="icon">🌬️</span><h3>마음 호흡</h3><p>안정과 집중을 위한 호흡 가이드</p></div>
-            <div class="bento-item" data-tab="pomo"><span class="icon">⏲️</span><h3>뽀모도로</h3><p>생산성을 극대화하는 집중력 타이머</p></div>
-            <div class="bento-item" data-tab="quote"><span class="icon">✍️</span><h3>명언 한마디</h3><p>글로벌 리더들의 지혜와 영감</p></div>
-            <div class="bento-item" data-tab="unit"><span class="icon">📏</span><h3>단위 변환</h3><p>실생활에 꼭 필요한 스마트 변환기</p></div>
-            <div class="bento-item" data-tab="pass"><span class="icon">🔐</span><h3>암호 생성</h3><p>강력한 보안 알고리즘 기반 비밀번호 생성</p></div>
-            <div class="bento-item" data-tab="coin"><span class="icon">🪙</span><h3>랜덤 결정</h3><p>빠르고 합리적인 의사결정을 돕는 엔진</p></div>
+            <div class="bento-item" data-tab="lotto"><h3>🎱 로또 번호</h3><p>행운의 번호 추출</p></div>
+            <div class="bento-item" data-tab="gender"><h3>📸 AI 남녀상</h3><p>얼굴 스타일 분석</p></div>
+            <div class="bento-item" data-tab="dinner"><h3>🍽️ 메뉴 추천</h3><p>식사 고민 해결</p></div>
+            <div class="bento-item" data-tab="fortune"><h3>🔮 오늘의 운세</h3><p>하루의 흐름 확인</p></div>
+            <div class="bento-item" data-tab="breath"><h3>🌬️ 마음 호흡</h3><p>심신 안정 가이드</p></div>
+            <div class="bento-item" data-tab="pomo"><h3>⏲️ 뽀모도로</h3><p>집중력 관리 타이머</p></div>
+            <div class="bento-item" data-tab="quote"><h3>✍️ 명언 한마디</h3><p>매일의 영감</p></div>
+            <div class="bento-item" data-tab="unit"><h3>📏 단위 변환</h3><p>생활 수치 계산</p></div>
+            <div class="bento-item" data-tab="pass"><h3>🔐 암호 생성</h3><p>보안 비밀번호 생성</p></div>
+            <div class="bento-item" data-tab="coin"><h3>🪙 랜덤 결정</h3><p>빠른 의사결정</p></div>
         </div>
     </div>
 
-    <!-- 도구함 그리드 -->
+    <!-- 도구함 레이아웃 -->
     <div id="tools-layout" class="content-grid hidden">
         <aside class="sidebar-menu">
             <button class="tab-btn" data-tab="lotto">🎱 로또 번호</button>
@@ -77,188 +70,148 @@
         </aside>
 
         <div class="tool-workspace">
-            <!-- 로또 섹션 -->
+            <!-- Lotto -->
             <div id="lotto-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>로또 번호 생성기</h2><p>행운의 6자리 숫자를 즉시 추출합니다.</p></div>
+                <div class="workspace-header"><h2>로또 번호 생성기</h2><p>행운의 숫자를 무작위로 추출합니다.</p></div>
                 <div id="numbers" class="numbers-container"></div>
                 <button id="generate-btn" class="btn-primary">번호 생성하기</button>
             </div>
 
-            <!-- AI 남녀상 섹션 -->
+            <!-- AI Vision -->
             <div id="gender-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>AI 남녀상 테스트</h2><p>인공지능 모델이 얼굴 특징을 정밀 분석합니다.</p></div>
-                <div class="scan-area">
+                <div class="workspace-header"><h2>AI 남녀상 테스트</h2><p>인공지능이 분석하는 얼굴 스타일</p></div>
+                <div style="text-align:center;">
                     <input type="file" id="image-input" accept="image/*" hidden>
-                    <label for="image-input" class="btn-primary" style="display:inline-block; cursor:pointer;">사진 업로드</label>
-                    <div id="preview-wrap" style="position:relative; margin-top:3rem;">
-                        <img id="preview-image" style="display:none; width:100%; border-radius:24px; box-shadow:var(--shadow-xl);">
-                        <div id="scan-line" class="scan-line hidden"></div>
-                    </div>
+                    <label for="image-input" class="btn-primary" style="display:inline-block; width:auto; cursor:pointer;">사진 업로드</label>
+                    <img id="preview-image" style="display:none; width:100%; border-radius:16px; margin-top:2rem;">
+                    <div id="loading-spinner" class="hidden" style="margin-top:1rem;">분석 중...</div>
+                    <div id="label-container" style="margin-top:2rem;"></div>
                 </div>
-                <div id="loading-spinner" class="hidden" style="margin-top:2rem; font-weight:800; color:var(--p-emerald);">데이터 분석 중...</div>
-                <div id="label-container" style="margin-top:3rem;"></div>
             </div>
 
-            <!-- 메뉴 추천 섹션 -->
+            <!-- Food Lab -->
             <div id="dinner-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>오늘의 메뉴 추천</h2><p>데이터 알고리즘이 제안하는 최적의 식단.</p></div>
-                <div id="menu-image-container" style="width:100%; height:400px; border-radius:32px; background:var(--bg-base); display:flex; align-items:center; justify-content:center; font-size:5rem; overflow:hidden;">🍽️</div>
-                <h3 id="menu-name" style="font-size:2.5rem; font-weight:900; color:var(--p-indigo); margin:2rem 0 0.5rem;"></h3>
-                <p id="menu-category" style="font-size:1.2rem; color:var(--text-sub); margin-bottom:3rem; font-weight:700;"></p>
-                <div id="recipe-container" class="hidden" style="text-align:left; background:var(--bg-base); padding:3rem; border-radius:32px; border:1px solid var(--border-light);">
-                    <h4 style="color:var(--text-strong); font-size:1.4rem;">주요 재료</h4>
-                    <p id="recipe-ingredients" style="color:var(--text-main); font-size:1.1rem; line-height:1.8;"></p>
-                    <h4 style="color:var(--text-strong); font-size:1.4rem; margin-top:2.5rem;">조리 순서</h4>
-                    <ol id="recipe-steps" style="color:var(--text-main); font-size:1.1rem; line-height:2;"></ol>
+                <div class="workspace-header"><h2>오늘의 메뉴 추천</h2><p>당신을 위한 맞춤형 식단 제안</p></div>
+                <div id="menu-image-container" style="width:100%; height:300px; border-radius:20px; background:#eee; display:flex; align-items:center; justify-content:center; font-size:4rem; overflow:hidden; margin-bottom:2rem;">🍽️</div>
+                <h3 id="menu-name" style="text-align:center; font-size:1.8rem; margin-bottom:1rem;"></h3>
+                <div id="recipe-container" class="hidden" style="text-align:left; background:var(--bg-base); padding:2rem; border-radius:16px;">
+                    <p id="recipe-ingredients" style="margin-bottom:1.5rem;"></p>
+                    <ol id="recipe-steps" style="padding-left:1.5rem;"></ol>
                 </div>
-                <button id="recommend-menu-btn" class="btn-primary" style="margin-top:3rem;">메뉴 추천 시작</button>
+                <button id="recommend-menu-btn" class="btn-primary" style="margin-top:2rem;">메뉴 추천받기</button>
             </div>
 
-            <!-- 오늘의 운세 섹션 -->
+            <!-- Fortune -->
             <div id="fortune-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>오늘의 운세</h2><p>별자리와 띠별 분석을 통한 행운의 가이드.</p></div>
-                <div class="support-wrapper" style="grid-template-columns:1fr 1fr; gap: 1rem;">
-                    <select id="fortune-type" class="input-field"><option value="zodiac">12띠별 운세</option><option value="star">별자리 운세</option></select>
+                <div class="workspace-header"><h2>오늘의 운세</h2><p>하루의 행운을 점쳐보세요.</p></div>
+                <div class="support-form" style="display:flex; gap:1rem; margin-bottom:2rem;">
+                    <select id="fortune-type" class="input-field"><option value="zodiac">띠별</option><option value="star">별자리</option></select>
                     <select id="fortune-val" class="input-field"></select>
                 </div>
-                <button id="get-fortune-btn" class="btn-primary" style="margin-top:3rem;">운세 확인하기</button>
-                <div id="fortune-result" class="hidden" style="margin-top:3rem; padding:3rem; border-radius:32px; background:var(--bg-base); font-size:1.4rem; font-weight:800; border:2px dashed var(--p-purple);"></div>
+                <button id="get-fortune-btn" class="btn-primary">운세 확인</button>
+                <div id="fortune-result" class="hidden result-box"></div>
             </div>
 
-            <!-- 마음 호흡 섹션 -->
+            <!-- Breath -->
             <div id="breath-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>마음 챙김 호흡</h2><p>스트레스 해소와 마음의 안정을 위한 가이드.</p></div>
+                <div class="workspace-header"><h2>마음 챙김 호흡</h2><p>부드러운 호흡으로 안정을 찾으세요.</p></div>
                 <div class="breath-canvas"></div>
-                <h3 id="breath-text" style="font-size:2.5rem; font-weight:900; color:var(--p-emerald);">준비</h3>
-                <button id="breath-btn" class="btn-primary" style="margin-top:3rem;">가이드 시작</button>
+                <h3 id="breath-text" style="text-align:center; font-size:2rem; margin-bottom:2rem;">준비</h3>
+                <button id="breath-btn" class="btn-primary">가이드 시작</button>
             </div>
 
-            <!-- 뽀모도로 섹션 -->
+            <!-- Pomo -->
             <div id="pomo-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>뽀모도로 타이머</h2><p>집중과 휴식의 완벽한 밸런스를 관리하세요.</p></div>
-                <div class="pomo-circle-outer" id="pomo-ring">
-                    <div class="pomo-circle-inner">
-                        <div id="pomo-display" class="pomo-time">25:00</div>
-                        <p style="font-weight:800; color:var(--text-sub); margin:0;">집중 모드</p>
-                    </div>
-                </div>
-                <div style="display:flex; gap:1.5rem; justify-content:center;">
-                    <button id="pomo-start" class="btn-primary" style="background:var(--rose-gradient);">타이머 시작</button>
-                    <button id="pomo-reset" class="btn-primary" style="background:var(--text-sub);">초기화</button>
+                <div class="workspace-header"><h2>뽀모도로 타이머</h2><p>25분 집중, 5분 휴식</p></div>
+                <div class="pomo-timer-box"><div id="pomo-display" class="pomo-time">25:00</div></div>
+                <div style="display:flex; gap:1rem;">
+                    <button id="pomo-start" class="btn-primary">시작</button>
+                    <button id="pomo-reset" class="btn-primary" style="background:#666;">초기화</button>
                 </div>
             </div>
 
-            <!-- 명언 한마디 섹션 -->
+            <!-- Quote -->
             <div id="quote-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>오늘의 한마디</h2><p>매일 새롭게 전해지는 영감의 문장들.</p></div>
-                <div style="background:var(--bg-base); padding:4rem; border-radius:32px; border-left:10px solid var(--p-indigo); text-align:left;">
-                    <p id="quote-text" style="font-size:2rem; font-weight:900; line-height:1.5; color:var(--text-strong);"></p>
-                    <p id="quote-author" style="font-size:1.2rem; font-weight:700; color:var(--text-sub); margin-top:2rem; text-align:right;"></p>
+                <div class="workspace-header"><h2>오늘의 명언</h2><p>당신의 하루에 영감을 더합니다.</p></div>
+                <div class="result-box" style="text-align:left; min-height:100px;">
+                    <p id="quote-text" style="font-size:1.2rem; margin-bottom:1rem;"></p>
+                    <p id="quote-author" style="text-align:right; color:var(--text-sub);"></p>
                 </div>
-                <button id="new-quote-btn" class="btn-primary" style="margin-top:3rem;">다른 명언 보기</button>
+                <button id="new-quote-btn" class="btn-primary" style="margin-top:2rem;">다른 명언</button>
             </div>
 
-            <!-- 단위 변환 섹션 -->
+            <!-- Unit -->
             <div id="unit-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>스마트 단위 변환기</h2><p>실생활 수치를 가장 정확하게 변환합니다.</p></div>
-                <div class="support-form" style="background:none; padding:0;">
-                    <div class="field-group">
-                        <label>수치 입력</label>
-                        <input type="number" id="unit-input" class="input-field" placeholder="값을 입력하세요">
-                    </div>
-                    <div class="field-group">
-                        <label>변환 모드</label>
-                        <select id="unit-mode" class="input-field">
-                            <option value="py">평 → 제곱미터 (㎡)</option>
-                            <option value="m2">제곱미터 (㎡) → 평</option>
-                            <option value="in">인치 → 센티미터 (㎝)</option>
-                            <option value="cm">센티미터 (㎝) → 인치</option>
-                        </select>
-                    </div>
-                    <div id="unit-result" style="font-size:2rem; font-weight:900; color:var(--p-indigo); text-align:center; padding:2rem; background:var(--bg-surface); border-radius:20px; border:1px solid var(--border-light);">결과 표시 대기 중</div>
+                <div class="workspace-header"><h2>단위 변환기</h2><p>빠르고 정확한 수치 변환</p></div>
+                <div class="support-form">
+                    <input type="number" id="unit-input" class="input-field" placeholder="수치 입력" style="margin-bottom:1rem;">
+                    <select id="unit-mode" class="input-field" style="margin-bottom:1.5rem;">
+                        <option value="py">평 → ㎡</option>
+                        <option value="m2">㎡ → 평</option>
+                        <option value="in">인치 → ㎝</option>
+                        <option value="cm">㎝ → 인치</option>
+                    </select>
+                    <div id="unit-result" class="result-box">결과 대기 중</div>
                 </div>
             </div>
 
-            <!-- 암호 생성 섹션 -->
+            <!-- Pass -->
             <div id="pass-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>보안 암호 생성기</h2><p>예측 불가능한 강력한 비밀번호를 생성합니다.</p></div>
-                <div class="support-form" style="background:none; padding:0;">
-                    <div class="field-group">
-                        <label>비밀번호 길이 (추천: 16자 이상)</label>
-                        <input type="number" id="pass-len" class="input-field" value="16" min="4" max="64">
-                    </div>
-                    <div id="pass-result" style="font-family:'JetBrains Mono', monospace; font-size:1.8rem; background:var(--text-strong); color:var(--p-emerald); padding:2rem; border-radius:20px; word-break:break-all; margin-bottom:2rem; text-align:center;">********</div>
-                    <button id="gen-pass-btn" class="btn-primary" style="width:100%;">암호 생성하기</button>
+                <div class="workspace-header"><h2>암호 생성기</h2><p>안전한 비밀번호를 생성합니다.</p></div>
+                <div class="support-form">
+                    <label>길이: <input type="number" id="pass-len" class="input-field" value="16" style="width:80px;"></label>
+                    <div id="pass-result" class="result-box" style="font-family:monospace; font-size:1.4rem; margin:1.5rem 0;">********</div>
+                    <button id="gen-pass-btn" class="btn-primary">암호 생성</button>
                 </div>
             </div>
 
-            <!-- 랜덤 결정 섹션 -->
+            <!-- Coin -->
             <div id="coin-section" class="tab-content hidden">
-                <div class="workspace-header"><h2>랜덤 결정기</h2><p>사소한 고민부터 중요한 선택까지 도와드립니다.</p></div>
-                <div id="coin-obj" style="width:150px; height:150px; background:var(--p-amber); border-radius:50%; margin:4rem auto; display:flex; align-items:center; justify-content:center; font-size:4rem; color:white; box-shadow:0 15px 30px rgba(245, 158, 11, 0.4); border:10px solid #d97706; transition:transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);">?</div>
-                <h3 id="coin-result" style="font-size:2.5rem; font-weight:900; color:var(--p-amber); text-align:center;">결과 대기 중</h3>
-                <button id="flip-coin-btn" class="btn-primary" style="background:var(--p-amber); margin-top:3rem; width:100%;">동전 던지기</button>
+                <div class="workspace-header"><h2>랜덤 결정기</h2><p>선택의 고민을 줄여드립니다.</p></div>
+                <div id="coin-obj" style="width:120px; height:120px; background:var(--p-amber); border-radius:50%; margin:3rem auto; display:flex; align-items:center; justify-content:center; font-size:3rem; color:white; transition:0.6s;">?</div>
+                <h3 id="coin-result" style="text-align:center; font-size:1.8rem; margin-bottom:2rem;">준비</h3>
+                <button id="flip-coin-btn" class="btn-primary">동전 던지기</button>
             </div>
         </div>
     </div>
 
-    <!-- 제휴 문의 섹션 -->
+    <!-- 제휴 문의 -->
     <div id="inquiry-section" class="tab-content hidden">
-        <div class="workspace-header"><h2>OmniKit 제휴 문의</h2><p>비즈니스 파트너십 및 서비스 개선 제안을 보내주세요.</p></div>
-        <div class="support-wrapper">
-            <div class="support-info" style="text-align:left;">
-                <h3>도움이 필요하신가요?</h3>
-                <p>문의하신 내용은 담당자가 확인 후 24시간 이내에 답변해 드립니다.</p>
-                <ul style="list-style:none; padding:0; margin-top:3rem; line-height:2.5;">
-                    <li><strong>이메일:</strong> support@omnikit.com</li>
-                    <li><strong>운영시간:</strong> 평일 09:00 - 18:00 (주말/공휴일 제외)</li>
-                    <li><strong>답변속도:</strong> 평균 12시간 이내</li>
-                </ul>
-            </div>
-            <div class="support-form">
-                <form action="https://formspree.io/f/xreygbbb" method="POST">
-                    <div class="field-group"><label>성함 / 단체명</label><input type="text" name="name" class="input-field" placeholder="성함을 입력하세요" required></div>
-                    <div class="field-group"><label>이메일 주소</label><input type="email" name="_replyto" class="input-field" placeholder="답변받으실 이메일을 입력하세요" required></div>
-                    <div class="field-group"><label>문의 내용</label><textarea name="message" class="input-field" style="height:180px;" placeholder="문의하실 내용을 상세히 적어주세요" required></textarea></div>
-                    <button type="submit" class="btn-primary" style="width:100%;">문의 내용 전송</button>
-                </form>
-            </div>
+        <div class="workspace-header"><h2>제휴 문의</h2><p>서비스에 대한 제안이나 문의를 남겨주세요.</p></div>
+        <div class="support-form">
+            <form action="https://formspree.io/f/xreygbbb" method="POST">
+                <div class="field-group"><label>이름</label><input type="text" name="name" class="input-field" required></div>
+                <div class="field-group"><label>이메일</label><input type="email" name="_replyto" class="input-field" required></div>
+                <div class="field-group"><label>내용</label><textarea name="message" class="input-field" style="height:150px;" required></textarea></div>
+                <button type="submit" class="btn-primary">문의하기</button>
+            </form>
         </div>
     </div>
 
-    <!-- 커뮤니티 섹션 -->
-    <section class="community-canvas">
-        <div class="community-top">
-            <div style="text-align:left;">
-                <h2 id="discussion-title">💬 OmniKit 커뮤니티</h2>
-                <p style="color:var(--text-sub); font-weight:700; margin-top:0.5rem;">다른 사용자들과 소통하고 행운을 나누세요.</p>
-            </div>
-            <button id="refresh-comments" class="btn-primary" style="padding: 0.8rem 1.5rem; font-size: 0.9rem; border-radius:14px;">🔄 새로고침</button>
+    <!-- 커뮤니티 섹션 - 깔끔한 레이아웃 -->
+    <section class="community-section">
+        <div class="community-header">
+            <h2 id="discussion-title">💬 커뮤니티</h2>
+            <button id="refresh-comments" class="btn-primary" style="width:auto; padding:0.5rem 1rem; font-size:0.8rem;">새로고침</button>
         </div>
-        <div id="disqus_thread" style="padding:2rem; border-radius:24px; border:1px solid var(--border-light); background:var(--bg-base);"></div>
+        <div id="disqus_thread"></div>
     </section>
 </main>
 
 <footer>
-    <div class="footer-content">
-        <div class="footer-section">
-            <h4 class="logo">OmniKit</h4>
-            <p>Better tools for better life. 옴니킷은 당신의 일상을 더 가치 있게 만듭니다.</p>
-        </div>
-        <div class="footer-section">
-            <h4 style="color:var(--text-strong); margin-bottom:1.5rem;">정보</h4>
+    <div class="footer-container">
+        <div class="footer-logo">OmniKit</div>
+        <div class="footer-links">
             <a data-tab="home">홈</a>
             <a data-tab="lotto">도구함</a>
             <a href="privacy.html">개인정보 처리방침</a>
         </div>
-    </div>
-    <div style="text-align: center; margin-top: 5rem; color: var(--text-sub); font-size: 0.9rem; border-top: 1px solid var(--border-light); padding-top: 3rem;">
-        &copy; 2026 OmniKit. Designed for Professionals.
+        <div class="footer-copy">&copy; 2026 OmniKit. All rights reserved.</div>
     </div>
 </footer>
 
 <script src="menuData.js"></script>
-<script src="main.js?v=3.1.0"></script>
+<script src="main.js?v=3.2.0"></script>
 <script id="dsq-count-scr" src="//productbuilder-j0ykvmteku.disqus.com/count.js" async></script>
 </body>
 </html>
