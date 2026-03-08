@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>멀티 툴 서비스 (로또 & AI 테스트 & 메뉴 추천)</title>
+    <meta name="description" content="일상의 작은 결정들을 도와주는 데일리 툴스입니다. 로또 번호 생성, AI 관상 테스트, 저녁 메뉴 추천 등 유용한 도구들을 무료로 이용해보세요.">
+    <meta name="keywords" content="로또번호생성기, 관상테스트, 저녁메뉴추천, AI관상, 무료운세, 메뉴고르기">
+    <title>Daily Tools - 일상의 모든 도구</title>
+    
     <meta name="google-adsense-account" content="ca-pub-6966497106387748">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6966497106387748"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6966497106387748" crossorigin="anonymous"></script>
+    
     <link rel="stylesheet" href="style.css">
     
-    <!-- 테마 초기화 스크립트 -->
     <script>
         (function() {
             const theme = localStorage.getItem('theme') || 'light';
@@ -25,125 +27,220 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
 <body>
-    <div class="container">
+
+<header>
+    <div class="header-container">
+        <a href="#" class="logo">
+            <span style="font-size: 1.8rem;">🛠️</span> Daily Tools
+        </a>
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link" onclick="document.querySelector('[data-tab=lotto]').click()">로또 번호</a></li>
+                <li><a href="#" class="nav-link" onclick="document.querySelector('[data-tab=gender]').click()">AI 관상</a></li>
+                <li><a href="#" class="nav-link" onclick="document.querySelector('[data-tab=dinner]').click()">메뉴 추천</a></li>
+            </ul>
+        </nav>
         <button id="theme-toggle" class="theme-toggle" title="테마 변경">☀️</button>
-        
-        <!-- 탭 메뉴 -->
-        <div class="tab-menu">
-            <button class="tab-btn active" data-tab="lotto">로또 추천</button>
-            <button class="tab-btn" data-tab="gender">AI 남녀상</button>
-            <button class="tab-btn" data-tab="dinner">오늘의 메뉴</button>
-        </div>
+    </div>
+</header>
 
-        <!-- 로또 섹션 -->
-        <div id="lotto-section" class="tab-content active">
-            <h1>로또 번호 생성기</h1>
-            <div class="lotto-image">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <radialGradient id="ballGradient" cx="30%" cy="30%" r="70%">
-                            <stop offset="0%" stop-color="#FFEB3B"/>
-                            <stop offset="100%" stop-color="#FBC02D"/>
-                        </radialGradient>
-                    </defs>
-                    <circle cx="50" cy="50" r="45" fill="url(#ballGradient)"/>
-                    <circle cx="50" cy="50" r="28" fill="white" opacity="0.9"/>
-                    <text x="50" y="62" font-family="'Pretendard', sans-serif" font-size="32" font-weight="900" fill="#FBC02D" text-anchor="middle">7</text>
-                </svg>
-            </div>
-            <div id="numbers" class="numbers-container"></div>
-            <button id="generate-btn" class="main-btn">번호 생성하기</button>
+<main>
+    <section class="intro-section">
+        <h1>당신의 일상을 더 스마트하게</h1>
+        <p>복잡한 고민은 줄이고, 일상의 소소한 즐거움을 더하세요.<br>Daily Tools가 당신의 선택을 도와드립니다.</p>
+    </section>
 
-            <div class="disqus-count">
-                <a href="#comment-area" class="dsq-count-link" id="lotto-count-link">댓글 보기</a>
-            </div>
-        </div>
+    <div class="content-grid">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar-menu">
+            <button class="tab-btn active" data-tab="lotto">🎱 로또 번호 생성기</button>
+            <button class="tab-btn" data-tab="gender">📸 AI 관상 테스트</button>
+            <button class="tab-btn" data-tab="dinner">🍽️ 오늘 저녁 뭐 먹지?</button>
+        </aside>
 
-        <!-- 남녀상 테스트 섹션 -->
-        <div id="gender-section" class="tab-content">
-            <h1>AI 남녀상 테스트</h1>
-            <p class="subtitle">사진을 업로드하여 분석해보세요</p>
+        <!-- Main Content Area -->
+        <div class="main-content">
             
-            <div class="upload-area" id="upload-area">
-                <input type="file" id="image-input" accept="image/*" hidden>
-                <label for="image-input" class="upload-label">
-                    <div class="upload-icon">📸</div>
-                    <span>사진 업로드하기</span>
-                </label>
-                <img id="preview-image" style="display: none; max-width: 100%; border-radius: 10px; margin-top: 10px;">
-            </div>
-
-            <div id="loading-spinner" style="display: none; margin: 20px 0;">분석 중...</div>
-            <div id="label-container"></div>
-
-            <div class="disqus-count">
-                <a href="#comment-area" class="dsq-count-link" id="gender-count-link">댓글 보기</a>
-            </div>
-        </div>
-
-        <!-- 저녁 메뉴 추천 섹션 -->
-        <div id="dinner-section" class="tab-content">
-            <h1>오늘 저녁 뭐 먹지?</h1>
-            <p class="subtitle">다양한 인기 메뉴와 레시피를 추천해드려요</p>
-            
-            <div class="menu-display" id="menu-display">
-                <div id="menu-image-container" class="menu-image-container">
-                    <div class="menu-emoji" id="menu-emoji">🍽️</div>
-                    <img id="menu-img" style="display: none;">
+            <!-- Lotto Section -->
+            <div id="lotto-section" class="tab-content active">
+                <div class="tool-container">
+                    <div class="lotto-image">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="ballGradient" cx="30%" cy="30%" r="70%">
+                                    <stop offset="0%" stop-color="#FFEB3B"/>
+                                    <stop offset="100%" stop-color="#FBC02D"/>
+                                </radialGradient>
+                            </defs>
+                            <circle cx="50" cy="50" r="45" fill="url(#ballGradient)"/>
+                            <circle cx="50" cy="50" r="28" fill="white" opacity="0.9"/>
+                            <text x="50" y="62" font-family="'Pretendard', sans-serif" font-size="32" font-weight="900" fill="#FBC02D" text-anchor="middle">7</text>
+                        </svg>
+                    </div>
+                    <h2>행운의 로또 번호 생성기</h2>
+                    <p style="margin-bottom: 2rem; color: var(--text-secondary);">빅데이터 기반 알고리즘은 아니지만, 당신의 행운을 믿어보세요!</p>
+                    
+                    <div id="numbers" class="numbers-container"></div>
+                    <button id="generate-btn" class="main-btn">번호 생성하기</button>
                 </div>
-                <div class="menu-name" id="menu-name">메뉴를 추천받아보세요</div>
-                <div id="menu-category" class="menu-category"></div>
+
+                <div class="article-content">
+                    <h2>로또 당첨 확률과 번호 조합의 비밀</h2>
+                    <p>로또 6/45는 1부터 45까지의 숫자 중 6개를 선택하여 일치하는 개수에 따라 당첨금이 결정되는 복권입니다. 수학적으로 1등 당첨 확률은 약 814만 분의 1에 달합니다. 이는 벼락을 맞을 확률보다 낮은 수치라고 알려져 있죠.</p>
+                    
+                    <h3>번호를 선택하는 다양한 방법</h3>
+                    <p>많은 사람들이 자신만의 방식으로 번호를 선택합니다. 생일이나 기념일 같은 의미 있는 숫자를 조합하거나, 지난 회차의 당첨 번호를 분석하여 '뜨거운 수'와 '차가운 수'를 구분하기도 합니다. 하지만 통계학적으로 모든 번호가 나올 확률은 동일합니다.</p>
+                    
+                    <h3>자동 생성의 묘미</h3>
+                    <p>사람은 무의식적으로 특정 패턴(예: 7, 3과 같은 숫자 선호)을 선택하는 경향이 있습니다. 반면, 컴퓨터 알고리즘을 통한 무작위 생성은 이러한 편향을 없애주어 의외의 조합을 만들어냅니다. 때로는 기계적인 우연이 행운을 가져다주기도 합니다.</p>
+                </div>
                 
-                <div id="recipe-container" class="recipe-container" style="display: none;">
-                    <div class="recipe-section">
-                        <h3>[ 주재료 ]</h3>
-                        <p id="recipe-ingredients"></p>
-                    </div>
-                    <div class="recipe-section">
-                        <h3>[ 조리 순서 ]</h3>
-                        <ol id="recipe-steps"></ol>
-                    </div>
+                <div class="disqus-count">
+                    <a href="#comment-area" class="dsq-count-link" id="lotto-count-link">댓글 보기</a>
                 </div>
             </div>
-            
-            <button id="recommend-menu-btn" class="main-btn">메뉴 추천받기</button>
 
-            <div class="disqus-count">
-                <a href="#comment-area" class="dsq-count-link" id="dinner-count-link">댓글 보기</a>
+            <!-- Gender AI Section -->
+            <div id="gender-section" class="tab-content">
+                <div class="tool-container">
+                    <h2>AI 관상 테스트</h2>
+                    <p style="margin-bottom: 2rem; color: var(--text-secondary);">인공지능이 분석하는 나의 얼굴상은 어떤 동물일까요?</p>
+
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" id="image-input" accept="image/*" hidden>
+                        <label for="image-input" class="upload-label">
+                            <div class="upload-icon">📸</div>
+                            <span>사진 업로드하기</span>
+                        </label>
+                        <img id="preview-image" style="display: none; max-width: 100%; border-radius: 10px; margin-top: 10px;">
+                    </div>
+
+                    <div id="loading-spinner" style="display: none; margin: 20px 0;">
+                        <div style="display:inline-block;" class="spinner"></div>
+                        <p style="margin-top: 50px;">AI가 분석 중입니다...</p>
+                    </div>
+                    <div id="label-container"></div>
+                </div>
+
+                <div class="article-content">
+                    <h2>인공지능 관상학: 기술이 얼굴을 읽는 법</h2>
+                    <p>현대의 '관상'은 데이터 과학과 만났습니다. 전통적인 관상학이 통계와 경험에 의존했다면, AI 관상 분석은 수만 장의 얼굴 데이터를 학습한 인공지능 모델(CNN, Convolutional Neural Network)을 활용합니다.</p>
+
+                    <h3>Teachable Machine 기술</h3>
+                    <p>본 서비스는 구글의 Teachable Machine 기술을 활용합니다. 이는 이미지를 픽셀 단위로 분석하여 특징점을 추출하고, 학습된 데이터와 비교하여 가장 유사한 카테고리를 찾아냅니다. 예를 들어, 눈매가 날카로운지, 턱선이 부드러운지 등을 기계가 판단하는 것이죠.</p>
+
+                    <h3>개인정보 보호</h3>
+                    <p>많은 분들이 사진 업로드에 대해 걱정하시지만, 본 서비스의 AI 분석은 <strong>브라우저 내부(Client-side)</strong>에서만 이루어집니다. 즉, 여러분의 소중한 사진 데이터는 그 어떤 서버로도 전송되지 않으며, 분석이 끝나는 즉시 메모리에서 사라집니다. 안심하고 즐기셔도 됩니다.</p>
+                </div>
+
+                <div class="disqus-count">
+                    <a href="#comment-area" class="dsq-count-link" id="gender-count-link">댓글 보기</a>
+                </div>
             </div>
-        </div>
 
-        <hr class="divider">
+            <!-- Dinner Menu Section -->
+            <div id="dinner-section" class="tab-content">
+                <div class="tool-container">
+                    <h2>오늘 뭐 먹지? 메뉴 추천</h2>
+                    <p style="margin-bottom: 2rem; color: var(--text-secondary);">결정 장애 해결! 맛있는 메뉴와 레시피를 제안합니다.</p>
 
-        <!-- Disqus 댓글 영역 -->
-        <div class="disqus-wrapper" id="comment-area">
-            <div id="disqus_thread"></div>
-        </div>
-
-        <hr class="divider">
-
-        <div class="inquiry-form">
-            <h2>제휴 문의</h2>
-            <form action="https://formspree.io/f/xreygbbb" method="POST">
-                <div class="form-group">
-                    <label for="name">이름</label>
-                    <input type="text" id="name" name="name" required placeholder="성함을 입력해주세요">
+                    <div class="menu-display" id="menu-display">
+                        <div id="menu-image-container" class="menu-image-container">
+                            <div class="menu-emoji" id="menu-emoji">🍽️</div>
+                            <img id="menu-img" style="display: none;">
+                        </div>
+                        <div class="menu-name" id="menu-name">메뉴를 추천받아보세요</div>
+                        <div id="menu-category" class="menu-category"></div>
+                        
+                        <div id="recipe-container" class="recipe-container" style="display: none;">
+                            <div class="recipe-section">
+                                <h3>[ 주재료 ]</h3>
+                                <p id="recipe-ingredients"></p>
+                            </div>
+                            <div class="recipe-section">
+                                <h3>[ 조리 순서 ]</h3>
+                                <ol id="recipe-steps"></ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="recommend-menu-btn" class="main-btn">메뉴 추천받기</button>
                 </div>
-                <div class="form-group">
-                    <label for="email">이메일</label>
-                    <input type="email" id="email" name="_replyto" required placeholder="이메일 주소를 입력해주세요">
+
+                <div class="article-content">
+                    <h2>균형 잡힌 식단과 메뉴 선택의 중요성</h2>
+                    <p>"오늘 뭐 먹지?"는 현대인의 가장 큰 난제 중 하나입니다. 단순히 배를 채우는 것을 넘어, 영양소의 균형과 맛의 조화는 삶의 질을 결정짓는 중요한 요소입니다.</p>
+
+                    <h3>제철 음식의 효능</h3>
+                    <p>메뉴를 고를 때 제철 식재료를 활용한 음식을 선택하는 것이 좋습니다. 제철 음식은 맛이 좋을 뿐만 아니라, 그 시기에 필요한 영양소가 풍부하게 들어있어 면역력 강화에 도움을 줍니다. 예를 들어 봄에는 나물류, 가을에는 뿌리채소가 좋죠.</p>
+
+                    <h3>랜덤 추천의 장점</h3>
+                    <p>매번 먹던 음식만 먹다 보면 영양 불균형이 올 수 있습니다. 가끔은 랜덤 추천을 통해 평소에 시도하지 않았던 새로운 메뉴에 도전해보세요. 의외의 취향을 발견할 수도 있고, 다양한 식재료를 섭취함으로써 건강에도 긍정적인 영향을 줄 수 있습니다.</p>
                 </div>
-                <div class="form-group">
-                    <label for="message">문의 내용</label>
-                    <textarea id="message" name="message" required placeholder="문의하실 내용을 입력해주세요"></textarea>
+
+                <div class="disqus-count">
+                    <a href="#comment-area" class="dsq-count-link" id="dinner-count-link">댓글 보기</a>
                 </div>
-                <button type="submit" class="submit-btn">문의하기</button>
-            </form>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Disqus 댓글 영역 -->
+            <div class="disqus-wrapper" id="comment-area" style="background: var(--card-bg); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                <div id="disqus_thread"></div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="inquiry-form" style="background: var(--card-bg); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                <h2>제휴 및 개선 문의</h2>
+                <form action="https://formspree.io/f/xreygbbb" method="POST">
+                    <div class="form-group">
+                        <label for="name">이름</label>
+                        <input type="text" id="name" name="name" required placeholder="성함을 입력해주세요">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">이메일</label>
+                        <input type="email" id="email" name="_replyto" required placeholder="이메일 주소를 입력해주세요">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">문의 내용</label>
+                        <textarea id="message" name="message" required placeholder="서비스 이용 중 불편한 점이나 제안사항을 남겨주세요"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">문의하기</button>
+                </form>
+            </div>
+
         </div>
     </div>
+</main>
 
-    <script src="menuData.js"></script>
-    <script src="main.js"></script>
-    <script id="dsq-count-scr" src="//productbuilder-j0ykvmteku.disqus.com/count.js" async></script>
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>Daily Tools</h4>
+            <p>당신의 하루를 더 편리하고 즐겁게 만드는<br>생활 밀착형 웹 도구 모음입니다.</p>
+        </div>
+        <div class="footer-section">
+            <h4>바로가기</h4>
+            <a href="#" onclick="document.querySelector('[data-tab=lotto]').click()">로또 번호 생성</a>
+            <a href="#" onclick="document.querySelector('[data-tab=gender]').click()">AI 관상 테스트</a>
+            <a href="#" onclick="document.querySelector('[data-tab=dinner]').click()">저녁 메뉴 추천</a>
+        </div>
+        <div class="footer-section">
+            <h4>정보</h4>
+            <a href="terms.html">이용약관</a>
+            <a href="privacy.html">개인정보 처리방침</a>
+            <a href="mailto:contact@example.com">문의하기</a>
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 2rem; color: #666; font-size: 0.9rem;">
+        &copy; 2026 Daily Tools. All rights reserved.
+    </div>
+</footer>
+
+<script src="menuData.js"></script>
+<script src="main.js"></script>
+<script id="dsq-count-scr" src="//productbuilder-j0ykvmteku.disqus.com/count.js" async></script>
 </body>
 </html>

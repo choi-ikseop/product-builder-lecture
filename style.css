@@ -1,80 +1,219 @@
 :root {
-    --bg-color: #f0f2f5;
+    --bg-color: #f8f9fa;
     --card-bg: #ffffff;
-    --text-color: #1c1e21;
-    --accent-color: #007bff;
-    --accent-hover: #0056b3;
-    --border-color: #ddd;
+    --text-color: #212529;
+    --text-secondary: #6c757d;
+    --accent-color: #0d6efd;
+    --accent-hover: #0b5ed7;
+    --border-color: #dee2e6;
+    --header-bg: #ffffff;
+    --footer-bg: #212529;
+    --footer-text: #f8f9fa;
 }
 
 .dark-mode {
-    --bg-color: #18191a;
-    --card-bg: #242526;
-    --text-color: #e4e6eb;
-    --accent-color: #2d88ff;
-    --accent-hover: #4b97ff;
-    --border-color: #444;
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-color: #3d8bfd;
+    --accent-hover: #5c9eff;
+    --border-color: #333;
+    --header-bg: #1e1e1e;
+    --footer-bg: #000000;
 }
 
 body {
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
-    transition: background-color 0.3s, color 0.3s;
     background-color: var(--bg-color);
     color: var(--text-color);
-}
-
-.container {
-    text-align: center;
-    background-color: var(--card-bg);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 520px;
-    position: relative;
-    border: 1px solid var(--border-color);
-    margin: 40px 0;
-}
-
-/* 탭 스타일 */
-.tab-menu {
+    transition: background-color 0.3s, color 0.3s;
     display: flex;
-    background: var(--bg-color);
-    padding: 5px;
-    border-radius: 12px;
-    margin-bottom: 2rem;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-.tab-btn {
-    flex: 1;
-    padding: 12px 10px;
-    border: none;
-    background: transparent;
+/* Header & Nav */
+header {
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
     color: var(--text-color);
     font-weight: 600;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.2s;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    transition: color 0.2s;
 }
 
-.tab-btn.active {
-    background: var(--card-bg);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+nav a:hover, nav a.active {
     color: var(--accent-color);
 }
 
-.tab-content { display: none; }
-.tab-content.active { display: block; animation: fadeIn 0.3s; }
+/* Main Layout */
+main {
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+}
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* Intro Section */
+.intro-section {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.05) 0%, rgba(13, 110, 253, 0.01) 100%);
+    border-radius: 20px;
+}
 
-/* 로또 스타일 */
+.intro-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, var(--accent-color), #00c6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.intro-section p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Content Grid */
+.content-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr; /* Sidebar + Main Content */
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    .intro-section h1 { font-size: 2rem; }
+    nav { display: none; } /* Simplified for mobile, can add hamburger later */
+}
+
+/* Sidebar Menu (Desktop) */
+.sidebar-menu {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+}
+
+.sidebar-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    transition: all 0.2s;
+}
+
+.sidebar-menu button:hover {
+    background-color: var(--bg-color);
+}
+
+.sidebar-menu button.active {
+    background-color: var(--accent-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* Tool Container - The original container style adapted */
+.tool-container {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+/* Article Content for SEO */
+.article-content {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    text-align: left;
+    color: var(--text-color);
+    line-height: 1.8;
+}
+
+.article-content h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--accent-color); }
+.article-content h3 { font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.article-content p { margin-bottom: 1rem; color: var(--text-secondary); }
+
+/* Footer */
+footer {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 3rem 1rem;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section h4 { color: white; margin-bottom: 1rem; }
+.footer-section a { color: #aaa; text-decoration: none; display: block; margin-bottom: 0.5rem; }
+.footer-section a:hover { color: white; }
+
+/* Existing Tool Styles (preserved & tweaked) */
 .lotto-image {
     width: 80px; height: 80px; margin: 0 auto 1.5rem;
     animation: float 3s ease-in-out infinite;
@@ -88,121 +227,60 @@ body {
 
 .numbers-container {
     display: flex; justify-content: center; flex-wrap: wrap;
-    gap: 0.6rem; margin-bottom: 1.5rem; min-height: 50px;
+    gap: 0.8rem; margin-bottom: 2rem; min-height: 60px;
 }
 
 .number {
-    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-    background: var(--bg-color); border-radius: 50%; font-weight: bold; font-size: 0.9rem;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* AI 테스트 스타일 */
-.upload-area {
-    border: 2px dashed var(--border-color);
-    padding: 1.5rem; border-radius: 15px; margin-bottom: 20px;
-    cursor: pointer; transition: all 0.2s;
-}
-
-.upload-area:hover, .upload-area.drag-over { border-color: var(--accent-color); background: rgba(0,123,255,0.05); }
-.upload-label { cursor: pointer; display: block; }
-.upload-icon { font-size: 2.5rem; margin-bottom: 10px; }
-
-/* 메뉴 추천 및 레시피 스타일 */
-.menu-display {
-    background: var(--bg-color);
-    padding: 1.5rem;
-    border-radius: 20px;
-    margin-bottom: 2rem;
-    border: 1px solid var(--border-color);
-    transition: all 0.3s;
-}
-
-.menu-image-container {
-    width: 180px; height: 180px; margin: 0 auto 1.5rem;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--card-bg); border-radius: 20px;
-    overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    position: relative;
+    width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;
+    background: var(--bg-color); border-radius: 50%; font-weight: bold; font-size: 1.1rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); color: var(--text-color);
     border: 2px solid var(--border-color);
 }
 
-/* 스피너 스타일 */
-.spinner {
-    width: 40px; height: 40px;
-    border: 4px solid rgba(0, 123, 255, 0.1);
-    border-left-color: var(--accent-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    position: absolute;
+.upload-area {
+    border: 2px dashed var(--border-color);
+    padding: 2rem; border-radius: 15px; margin-bottom: 20px;
+    cursor: pointer; transition: all 0.2s; background: var(--bg-color);
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+.upload-area:hover { border-color: var(--accent-color); background: rgba(13, 110, 253, 0.05); }
 
-#menu-img { 
-    width: 100%; height: 100%; object-fit: cover; 
-    display: none; /* 로드 완료 전까지 숨김 */
-    animation: fadeIn 0.5s;
-}
-.menu-emoji { font-size: 3rem; }
-
-.menu-name { font-size: 1.3rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.3rem; }
-.menu-category { font-size: 0.85rem; color: #666; font-weight: 500; margin-bottom: 1rem; }
-.dark-mode .menu-category { color: #aaa; }
-
-.recipe-container {
-    text-align: left;
-    background: var(--card-bg);
-    padding: 1.2rem;
-    border-radius: 12px;
-    margin-top: 1rem;
+.menu-display {
+    background: var(--bg-color);
+    padding: 2rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
     border: 1px solid var(--border-color);
-    max-height: 300px;
-    overflow-y: auto;
 }
 
-.recipe-section { margin-bottom: 1.5rem; }
-.recipe-section h3 { font-size: 1rem; color: var(--accent-color); margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
-.recipe-section p { font-size: 0.95rem; line-height: 1.6; color: var(--text-color); }
-.recipe-section ol { padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-color); }
-.recipe-section li { margin-bottom: 0.6rem; line-height: 1.5; }
+.menu-image-container {
+    width: 200px; height: 200px; margin: 0 auto 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--card-bg); border-radius: 20px;
+    overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    position: relative;
+    border: 1px solid var(--border-color);
+}
 
-/* 공통 버튼 */
 .main-btn {
     width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 700;
     color: white; background-color: var(--accent-color);
     border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
 }
-.main-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,123,255,0.2); }
+.main-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(13, 110, 253, 0.3); background-color: var(--accent-hover); }
 
 .theme-toggle {
-    position: absolute; top: 1.5rem; right: 1.5rem;
-    background: var(--bg-color); border: 1px solid var(--border-color);
-    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem;
 }
 
-.divider { margin: 2.5rem 0; border: 0; border-top: 1px solid var(--border-color); }
+/* Recipe & Menu text fixes */
+.menu-name { font-size: 1.5rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem; }
+.recipe-container { background: var(--card-bg); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; border: 1px solid var(--border-color); }
 
-/* 제휴 문의 UI 개선 */
-.inquiry-form { text-align: left; padding: 0 5px; }
-.inquiry-form h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
-.form-group { margin-bottom: 1.2rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; }
-.form-group input, .form-group textarea {
-    width: 100%; padding: 0.8rem; border: 1px solid var(--border-color);
-    border-radius: 10px; background: var(--bg-color); color: var(--text-color);
-    font-size: 1rem; box-sizing: border-box;
+/* Inquiry Form */
+.inquiry-form input, .inquiry-form textarea {
+    background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color);
 }
-.form-group textarea { height: 120px; resize: vertical; }
 
-.submit-btn {
-    width: 100%; padding: 1rem; font-weight: 700; font-size: 1.1rem;
-    background: #28a745; color: white; border: none; border-radius: 10px;
-    cursor: pointer; transition: background 0.2s;
-}
-.submit-btn:hover { background: #218838; }
-
-.disqus-count { margin-top: 2rem; text-align: left; }
-.dsq-count-link { color: var(--accent-color); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+.hidden { display: none !important; }
