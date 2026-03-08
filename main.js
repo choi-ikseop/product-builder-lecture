@@ -32,7 +32,7 @@ themeToggle.addEventListener('click', () => {
 function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'home' ? baseUrl : baseUrl + "#!" + tabId;
-    const identifier = "daily-tools-v5-" + tabId;
+    const identifier = "daily-tools-v6-" + tabId;
     
     const tabNameMap = {
         'home': '홈 페이지',
@@ -134,7 +134,7 @@ document.getElementById('refresh-comments')?.addEventListener('click', () => {
 
 switchTab('home');
 
-// --- 기존 도구 기능 ---
+// --- 도구 기능 ---
 const numbersContainer = document.getElementById('numbers');
 const generateBtn = document.getElementById('generate-btn');
 const imageInput = document.getElementById('image-input');
@@ -167,18 +167,29 @@ generateBtn?.addEventListener('click', () => {
     });
 });
 
-// AI 동물상
+// AI 동물상 (강력한 강제 로드 버전)
 async function initModel() {
-    // 티치블 머신 URL에서 모델 정보를 강제로 갱신하기 위해 매번 새로고침 여부 확인
-    if (!model || model.getClassLabels().length < 3) {
-        console.log("최신 모델 로드 시도...");
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
-        
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
+
+    // 현재 로드된 모델이 구버전(라벨 2개)이면 강제로 버리고 새로 로드
+    if (model && model.getClassLabels().length < 3) {
+        console.log("구버전 모델 감지. 강제 리로드 진행.");
+        model = null;
+    }
+
+    if (!model) {
         try {
-            // 라이브러리 충돌 방지를 위해 쿼리스트링 제거 후 로드
-            model = await tmImage.load(modelURL, metadataURL);
-            console.log("모델 로드 성공! 현재 라벨:", model.getClassLabels());
+            // 캐시 버스팅은 metadata.json에만 적용 (Weights 로딩 오류 방지)
+            const cacheBuster = "?v=" + Date.now();
+            model = await tmImage.load(modelURL, metadataURL + cacheBuster);
+            console.log("모델 로드 완료. 라벨:", model.getClassLabels());
+            
+            // UI에 현재 인식 가능한 라벨 표시 (디버깅용)
+            const debugInfo = document.getElementById('model-debug-info');
+            if (debugInfo) {
+                debugInfo.innerText = "현재 모델 인식 항목: " + model.getClassLabels().join(", ");
+            }
         } catch (e) {
             console.error("모델 로드 실패:", e);
         }
@@ -216,15 +227,14 @@ async function predict(imgElement) {
     if (!model) return;
 
     const prediction = await model.predict(imgElement);
-    
-    // 확률 높은 순 정렬
     prediction.sort((a, b) => b.probability - a.probability);
     
     const lblContainer = document.getElementById("label-container");
     lblContainer.innerHTML = '';
     
-    // 결과 전량 출력 (개수 제한 없음)
-    prediction.forEach(p => {
+    // 모델이 뱉어주는 모든 결과를 무조건 출력
+    for (let i = 0; i < prediction.length; i++) {
+        const p = prediction[i];
         const className = p.className;
         const prob = (p.probability * 100).toFixed(0);
         const wrapper = document.createElement("div");
@@ -239,7 +249,7 @@ async function predict(imgElement) {
             </div>
         `;
         lblContainer.appendChild(wrapper);
-    });
+    }
 }
 
 // 메뉴 추천

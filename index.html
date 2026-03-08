@@ -104,11 +104,15 @@
                 </div>
             </div>
 
-            <!-- Gender AI Section (Actually Animal Face now) -->
+            <!-- Gender AI Section -->
             <div id="gender-section" class="tab-content hidden">
                 <div class="tool-container">
                     <h2>AI 동물상 테스트</h2>
-                    <p style="margin-bottom: 2rem; color: var(--text-secondary);">인공지능이 분석하는 나의 얼굴 스타일은 어떤 동물일까요?</p>
+                    <p style="margin-bottom: 1rem; color: var(--text-secondary);">인공지능이 분석하는 나의 얼굴 스타일은 어떤 동물일까요?</p>
+                    
+                    <!-- 디버깅 및 정보 표시용 -->
+                    <p id="model-debug-info" style="font-size: 0.8rem; color: var(--accent-color); margin-bottom: 2rem; font-weight: 600;">모델 로딩 중...</p>
+
                     <div class="upload-area" id="upload-area">
                         <input type="file" id="image-input" accept="image/*" hidden>
                         <label for="image-input" class="upload-label">
@@ -217,8 +221,7 @@
 </footer>
 
 <script src="menuData.js"></script>
-<script src="main.js?v=1.0.2"></script>
+<script src="main.js?v=1.0.3"></script>
 <script id="dsq-count-scr" src="//productbuilder-j0ykvmteku.disqus.com/count.js" async></script>
 </body>
 </html>
-
