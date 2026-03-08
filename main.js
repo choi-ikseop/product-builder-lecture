@@ -1,4 +1,4 @@
-const URL = "https://teachablemachine.withgoogle.com/models/1LWpie6dk/";
+const URL = "https://teachablemachine.withgoogle.com/models/Yza9DNKd3/";
 let model, labelContainer;
 
 // DOM 요소
@@ -32,12 +32,12 @@ themeToggle.addEventListener('click', () => {
 function resetDisqus(tabId) {
     const baseUrl = window.location.origin + window.location.pathname;
     const pageUrl = tabId === 'home' ? baseUrl : baseUrl + "#!" + tabId;
-    const identifier = "daily-tools-v6-" + tabId;
+    const identifier = "daily-tools-v7-" + tabId;
     
     const tabNameMap = {
         'home': '홈 페이지',
         'lotto': '로또 번호 생성기',
-        'gender': 'AI 동물상 테스트',
+        'gender': 'AI 남녀상 테스트',
         'dinner': '저녁 메뉴 추천',
         'inquiry': '제휴 및 개선 문의'
     };
@@ -167,25 +167,18 @@ generateBtn?.addEventListener('click', () => {
     });
 });
 
-// AI 동물상 (강력한 강제 로드 버전)
+// AI 남녀상 (강력 리셋 버전)
 async function initModel() {
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
-
-    // 현재 로드된 모델이 구버전(라벨 2개)이면 강제로 버리고 새로 로드
-    if (model && model.getClassLabels().length < 3) {
-        console.log("구버전 모델 감지. 강제 리로드 진행.");
-        model = null;
-    }
-
-    if (!model) {
+    // URL이 바뀌었으므로 강제 초기화
+    if (!model || model.getClassLabels().length < 3) {
+        console.log("새로운 AI 모델 로드 중...");
+        model = null; // 메모리 비우기
+        
         try {
-            // 캐시 버스팅은 metadata.json에만 적용 (Weights 로딩 오류 방지)
             const cacheBuster = "?v=" + Date.now();
-            model = await tmImage.load(modelURL, metadataURL + cacheBuster);
+            model = await tmImage.load(URL + "model.json", URL + "metadata.json" + cacheBuster);
             console.log("모델 로드 완료. 라벨:", model.getClassLabels());
             
-            // UI에 현재 인식 가능한 라벨 표시 (디버깅용)
             const debugInfo = document.getElementById('model-debug-info');
             if (debugInfo) {
                 debugInfo.innerText = "현재 모델 인식 항목: " + model.getClassLabels().join(", ");
@@ -232,9 +225,7 @@ async function predict(imgElement) {
     const lblContainer = document.getElementById("label-container");
     lblContainer.innerHTML = '';
     
-    // 모델이 뱉어주는 모든 결과를 무조건 출력
-    for (let i = 0; i < prediction.length; i++) {
-        const p = prediction[i];
+    prediction.forEach(p => {
         const className = p.className;
         const prob = (p.probability * 100).toFixed(0);
         const wrapper = document.createElement("div");
@@ -249,7 +240,7 @@ async function predict(imgElement) {
             </div>
         `;
         lblContainer.appendChild(wrapper);
-    }
+    });
 }
 
 // 메뉴 추천
